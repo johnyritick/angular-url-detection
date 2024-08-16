@@ -1,0 +1,50 @@
+<div class="parent-div">
+  <div class="container">
+    <div class="left">
+      <img src="assets/images/man.png" alt="User Avatar" class="login-img"/>
+    </div>
+    <form [formGroup]="loginForm" (ngSubmit)="login()" class="right-form">
+      <h2 class="login-title">Login</h2>
+      
+        <mat-form-field appearance="outline">
+          <mat-label>Email</mat-label>
+          <input formControlName="email" matInput placeholder="Enter your email" type="email" />
+          <mat-icon matSuffix>email</mat-icon>
+          <mat-error *ngIf="loginForm.get('email')?.hasError('required')">Email is required</mat-error>
+          <mat-error *ngIf="loginForm.get('email')?.hasError('email')">Invalid email format</mat-error>
+        </mat-form-field>
+
+      
+        <mat-form-field appearance="outline">
+          <mat-label>Password</mat-label>
+          <input matInput formControlName="password" placeholder="Enter your password" type="password" />
+          <mat-icon matSuffix>lock</mat-icon>
+          <mat-error *ngIf="loginForm.get('password')?.hasError('required')">Password is required</mat-error>
+          <mat-error *ngIf="loginForm.get('password')?.hasError('minlength')">Password must be at least 5 characters long</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>User Type</mat-label>
+          <select matNativeControl formControlName="role" name="role">
+            <option *ngFor="let item of loginRoles" [value]="item.value">
+              {{item.viewValue}}
+            </option>
+          </select>
+          <mat-error *ngIf="loginForm.get('role')?.hasError('required')">Please choose role</mat-error>
+        </mat-form-field>
+
+      <div class="actions">
+        <button mat-raised-button color="primary" class="register-button" routerLink="/register">
+          Register
+        </button>
+        <button [disabled]="!loginForm.valid" type="submit" color="primary" mat-raised-button class="login-button">
+          <mat-icon>login</mat-icon>
+          Login
+        </button>
+      </div>
+      <mat-hint class="register-hint">
+        New user? <a routerLink="/register">Register here</a>
+      </mat-hint>
+    </form>
+  </div>
+</div>

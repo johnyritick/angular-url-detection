@@ -1,0 +1,344 @@
+.donor-list-heading {
+    display: flex;
+    flex-direction: column;
+    margin: 30px 18px 10px;
+    font-family: "Poppins", sans-serif;
+  }
+  
+  .donor-list-heading h3 {
+    font-size: 36px;
+    font-weight: 600;
+  }
+  
+  .container-appointment {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 100%;
+    padding: 10px 20px;
+  }
+  
+  .left {
+    max-width: 30%;
+  }
+  
+  .right {
+    width: 70%;
+    padding-left: 3%;
+    display: flex;
+    align-items: center;
+  }
+  
+  .edit-btn {
+    display: flex;
+    flex-direction: row;
+    justify-content: end;
+    margin-bottom: 20px;
+  }
+  
+  .switch-btn {
+    padding: 4px 20px;
+    border-radius: 10px;
+    margin-bottom: 20%;
+  }
+  
+  .left {
+    display: flex;
+    flex-direction: column;
+    /* justify-content: center; */
+    padding-top: 20px;
+    align-items: center;
+    width: 40%;
+    border-right: 1px dotted grey;
+    margin: 10px 0px;
+  }
+  
+  .login-img {
+    height: 140px;
+    width: auto;
+  }
+  
+  .register-title {
+    grid-column: span 2;
+    font-size: 2rem;
+    font-weight: bold;
+    color: #333;
+    text-align: center;
+    margin: 30px 0px 20px;
+  }
+  
+  .appointment-heading {
+    display: flex;
+    flex-direction: column;
+    margin: 30px 18px 10px;
+    font-family: "Poppins", sans-serif;
+  }
+  
+  .appointment-heading h3 {
+    font-size: 36px;
+    font-weight: 600;
+  }
+  
+  .register-form {
+    width: 100%;
+    padding: 20px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0px 10px;
+    box-sizing: border-box;
+  }
+  
+  .mat-form-field {
+    width: 100%;
+  }
+  
+  .field-width-full {
+    grid-column: span 3;
+  }
+  
+  .register-button {
+    grid-column: span 2;
+    border-radius: 24px;
+    height: 50px;
+    font-weight: bold;
+    width: 30%;
+  }
+  
+  .register-btn-wrapper {
+    display: flex;
+    grid-column: span 3;
+    flex-direction: row;
+    justify-content: center;
+  }
+  
+  .register-hint {
+    grid-column: span 3;
+    text-align: center;
+    /* margin-top: 10px; */
+    font-size: 1rem;
+    color: #666;
+    margin-bottom: 15px;
+  }
+  
+  @media only screen and (max-width: 768px) {
+    .register-form {
+      grid-template-columns: 1fr;
+      padding: 10px;
+    }
+  
+    .register-title {
+      font-size: 1.5rem;
+    }
+  
+    .register-button {
+      margin-top: 20px;
+    }
+  }
+  
+  
+  /* yaha */
+  
+  
+  .modal-content {
+    background-color: #ffffff;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 500px;
+    padding: 20px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    position: relative;
+    animation: fadeIn 0.3s ease-in-out;
+  }
+  
+  /* Modal Header */
+  .modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid #e5e5e5;
+    padding-bottom: 15px;
+  }
+  
+  .profile-picture {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #007bff;
+  }
+  
+  h2 {
+    margin: 0;
+    font-size: 24px;
+    color: #333333;
+  }
+  
+  .close-button {
+    font-size: 24px;
+    color: #333333;
+    cursor: pointer;
+    background: transparent;
+    border: none;
+  }
+  
+  /* Modal Body */
+  .modal-body {
+    padding-top: 5%;
+  }
+  
+  .user-details {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 10px;
+    width: 100%;
+  }
+  
+  .detail-item {
+    display: flex;
+    width: 45%;
+    margin-right: 30px;
+    justify-content: space-between;
+    font-size: 16px;
+    color: #555555;
+  }
+  
+  .detail-title {
+    font-weight: bold;
+    color: #000000;
+  }
+  
+  /* Modal Footer */
+  .modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+  }
+  
+  .close-button-footer {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+  }
+  
+  .close-button-footer:hover {
+    background-color: #0056b3;
+  }
+  
+  /* Animation */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: scale(0.9);
+    }
+  
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 480px) {
+    .modal-content {
+      width: 100%;
+      margin: 10px;
+    }
+  
+    h2 {
+      font-size: 20px;
+    }
+  
+    .detail-item {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  }
+  
+  .custom-badge {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    margin-top: 4%;
+    justify-content: center;
+  }
+  
+  .custom-badge h4 {
+    background-color: #4050b6;
+    color: white;
+    font-weight: 500;
+    font-size: 17px;
+    padding: 10px 30px;
+    border: 1px solid;
+    border-radius: 10px;
+  }
+  
+  .form-wrapper {
+    margin: 2% 10%;
+    background-color: #ffffff;
+    border-radius: 15px;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  }
+  
+  .premium-success-card-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  
+  }
+  
+  .premium-success-card {
+    width: 100%;
+    max-width: 800px;
+    padding: 30px;
+    border-radius: 12px;
+    background: linear-gradient(145deg, #e0f7e9, #f4fcf7);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+    transition: transform 0.3s ease;
+  }
+  
+  .premium-success-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+  }
+  
+  .premium-icon-container img {
+    width: 60px;
+    height: 60px;
+    margin-bottom: 20px;
+    filter: drop-shadow(0 4px 4px rgba(0, 0, 0, 0.2));
+  }
+  
+  .premium-message-container h2 {
+    font-size: 1.75rem;
+    color: #2e7d32;
+    margin: 0;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+  }
+  
+  @media (max-width: 480px) {
+    .premium-success-card {
+      padding: 20px;
+      max-width: 90%;
+    }
+  
+    .premium-icon-container img {
+      width: 50px;
+      height: 50px;
+      margin-bottom: 15px;
+    }
+  
+    .premium-message-container h2 {
+      font-size: 1.5rem;
+    }
+  }

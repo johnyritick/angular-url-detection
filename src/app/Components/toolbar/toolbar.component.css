@@ -1,0 +1,87 @@
+* {
+  box-sizing: border-box;
+/* font-family: "Poppins", sans-serif; */
+}
+.nav-top-header {
+  background-color: #D32F2F;
+  color: white;
+  font-family: "Poppins", sans-serif;
+}
+
+.sidenav-container {
+  height: 100%;
+}
+
+.logo {
+  width: 20px;
+  height: auto;
+  margin-right: 4px;
+
+}
+
+.person-icon {
+  margin-right: 5px;
+}
+
+.sidenav {
+  width: 230px;
+}
+
+.sidenav mat-toolbar span {
+  color: #D32F2F;
+} 
+
+.sidenav .mat-toolbar {
+  background: inherit;
+}
+
+.user-button {
+  padding: 6px 8px;
+}
+
+.mat-toolbar.mat-primary {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+.menu-spacer {
+  flex: 1 1 auto;
+}
+
+.back-div {
+  position: relative !important;
+  bottom: 0 !important;
+}
+
+.hidden {
+  /* display: none; */
+}
+
+@media only screen and (max-width: 768px) {
+  /* For mobile phones: */
+  .hide-in-mobile {
+    display: none;
+  }
+
+  .app-heading {
+    font-size: 1.1rem;
+  }
+
+  .username {
+    display: none;
+  }
+
+  .user-button {
+    padding: 0 0;
+    min-width: 20px;
+  }
+
+  .arrow-icon {
+    padding: none;
+  }
+
+  .person-icon {
+    padding: none;
+  }
+}
+

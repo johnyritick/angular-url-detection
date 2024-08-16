@@ -1,0 +1,117 @@
+<form [formGroup]="donorRegisterForm" (ngSubmit)="register()" class="register-form">
+  <mat-form-field appearance="outline">
+    <mat-label>Full Name</mat-label>
+    <input matInput formControlName="name" placeholder="Enter your full name" type="text" />
+    <mat-icon matSuffix>account_circle</mat-icon>
+    <mat-error *ngIf="donorRegisterForm.get('name')?.hasError('required')">Full Name is required</mat-error>
+    <mat-error *ngIf="donorRegisterForm.get('name')?.hasError('minlength')">Full Name should be at least
+      characters.</mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Email</mat-label>
+    <input formControlName="email" matInput placeholder="Enter your email" type="email" />
+    <mat-icon matSuffix>email</mat-icon>
+    <mat-error *ngIf="donorRegisterForm.get('email')?.hasError('required')">Email is required</mat-error>
+    <mat-error *ngIf="donorRegisterForm.get('email')?.hasError('email')">Invalid email format</mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Password</mat-label>
+    <input name="password" type="password" matInput required formControlName="password" (change)="onChange()" />
+    <mat-icon matSuffix>lock</mat-icon>
+    <mat-error *ngIf="donorRegisterForm.get('password')?.hasError('required')">Password is required.</mat-error>
+    <mat-error *ngIf="donorRegisterForm.get('password')?.hasError('pattern')">
+      Password must include at least 8 characters, a number, an uppercase letter, a lowercase letter, and a special
+      character.
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Confirm Password</mat-label>
+    <input name="confirmPassword" type="password" matInput required formControlName="confirmPassword"
+      appConfirmPasswordValidator [password]="passwordTyped" />
+    <mat-icon matSuffix>lock</mat-icon>
+    <mat-error *ngIf="donorRegisterForm.get('confirmPassword')?.hasError('required')">Please re-enter your
+      password.</mat-error>
+    <mat-error *ngIf="donorRegisterForm.get('confirmPassword')?.hasError('confirmPasswordValid')">Passwords didn't
+      match</mat-error>
+  </mat-form-field>
+  <!-- start here -->
+
+  <mat-form-field appearance="outline">
+    <mat-label>Gender</mat-label>
+    <select matNativeControl formControlName="gender" name="car">
+      <option *ngFor="let item of gender" [value]="item.value">
+        {{item.viewValue}}
+      </option>
+    </select>
+    <mat-error *ngIf="donorRegisterForm.get('gender')?.hasError('required')">Please choose gender</mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Blood Group</mat-label>
+    <select matNativeControl formControlName="blood" name="car">
+      <option *ngFor="let item of bloodGroups" [value]="item.value">
+        {{item.viewValue}}
+      </option>
+    </select>
+    <mat-error *ngIf="donorRegisterForm.get('blood')?.hasError('required')">Please choose blood ground</mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Date of Birth</mat-label>
+    <input matInput [matDatepicker]="picker" formControlName="dob">
+    <mat-hint>MM/DD/YYYY</mat-hint>
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+    <mat-error *ngIf="donorRegisterForm.get('dob')?.hasError('required')">Please choose DOB</mat-error>
+  </mat-form-field>
+
+  <!-- end here -->
+
+  <mat-form-field appearance="outline">
+    <mat-label>Country</mat-label>
+    <input matInput formControlName="country" placeholder="Enter your country" type="text" />
+    <mat-icon matSuffix>flag</mat-icon>
+    <mat-error *ngIf="donorRegisterForm.get('country')?.hasError('required')">Country is required</mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>City</mat-label>
+    <input matInput formControlName="city" placeholder="Enter your city" type="text" />
+    <mat-icon matSuffix>location_city</mat-icon>
+    <mat-error *ngIf="donorRegisterForm.get('city')?.hasError('required')">City is required</mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+
+    <mat-label>Address</mat-label>
+    <textarea matInput rows="1" placeholder="Enter your address..." formControlName="address"></textarea>
+    <mat-error *ngIf="donorRegisterForm.get('address')?.hasError('required')">Address is required</mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Phone</mat-label>
+    <input matInput formControlName="contact" placeholder="Enter your contact number" type="text" />
+    <mat-icon matSuffix>smartphone</mat-icon>
+    <mat-error *ngIf="donorRegisterForm.get('contact')?.hasError('required')">Phone number is required</mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline" class="field-width-full">
+    <mat-label>Medical History</mat-label>
+    <textarea matInput rows="1" placeholder="e.g., chronic diseases, surgeries, allergies"
+      formControlName="medical_history"></textarea>
+    <mat-error *ngIf="donorRegisterForm.get('medical_history')?.hasError('required')">Medical History is required</mat-error>
+  </mat-form-field>
+
+  <span class="register-hint">Already a registered user? <a routerLink="/accounts/login">Sign In</a></span>
+
+  <div class="register-btn-wrapper">
+
+    <button [disabled]="!donorRegisterForm.valid" type="submit" color="primary" mat-raised-button class="register-button">
+      <mat-icon>save</mat-icon>
+      Create
+    </button>
+  </div>
+</form>

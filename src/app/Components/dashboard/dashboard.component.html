@@ -1,0 +1,260 @@
+<div class="container-appointment">
+  <div class="left">
+    <img src="assets/images/man.png" alt="User Avatar" class="login-img" />
+    <h2 class="register-title">{{currentUser.name}}</h2>
+    <button *ngIf="currentUser.role !=='admin'" mat-button color="primary" (click)="openEditForm()">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pen"
+        viewBox="0 0 16 16">
+        <path
+          d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001m-.644.766a.5.5 0 0 0-.707 0L1.95 11.756l-.764 3.057 3.057-.764L14.44 3.854a.5.5 0 0 0 0-.708z" />
+      </svg>
+      Edit Details</button>
+  </div>
+  <div class="right">
+    <div class="modal-body">
+      <div class="user-details">
+        <div class="detail-item">
+          <span class="detail-title">Donor ID:</span>
+          <span class="detail-value">{{this.currentUser.name}}</span>
+        </div>
+        <div class="detail-item">
+          <span class="detail-title">Email:</span>
+          <span class="detail-value">{{this.currentUser.email}}</span>
+        </div>
+        <div *ngIf="this.currentUser.contact" class="detail-item">
+          <span class="detail-title">Phone Number:</span>
+          <span class="detail-value">{{this.currentUser.contact}}</span>
+        </div>
+        <div *ngIf="this.currentUser.role === 'donor'" class="detail-item">
+          <span class="detail-title">Gender:</span>
+          <span class="detail-value">{{this.currentUser.gender}}</span>
+        </div>
+        <div *ngIf="this.currentUser.role === 'donor'" class="detail-item">
+          <span class="detail-title">Date of Birth:</span>
+          <span class="detail-value">{{this.currentUser.dob}}</span>
+        </div>
+
+        <div *ngIf="this.currentUser.role === 'donor'" class="detail-item">
+          <span class="detail-title">Blood Group:</span>
+          <span class="detail-value">{{this.currentUser.dob}}</span>
+        </div>
+
+        <div class="detail-item">
+          <span class="detail-title">Registration Date:</span>
+          <span class="detail-value">{{this.currentUser.created_at}}</span>
+        </div>
+
+        <div class="detail-item">
+          <span class="detail-title">Last Updated:</span>
+          <span class="detail-value">{{this.currentUser.updated_at}}</span>
+        </div>
+
+        <div class="detail-item">
+          <span class="detail-title">City:</span>
+          <span class="detail-value">{{this.currentUser.city}}</span>
+        </div>
+
+        <div class="detail-item">
+          <span class="detail-title">Country:</span>
+          <span class="detail-value">{{this.currentUser.country}}</span>
+        </div>
+
+        <div class="detail-item">
+          <span class="detail-title">Address:</span>
+          <span class="detail-value">{{this.currentUser.address}}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Appointment card starts here -->
+<div class="custom-badge" *ngIf="enableDonorFormEdit">
+  <h4>Fill the Details</h4>
+</div>
+
+<!-- donor ProfileForm -->
+<div *ngIf="enableDonorFormEdit" class="form-wrapper">
+  <form [formGroup]="donorProfileForm" (ngSubmit)="updateDetails()" class="register-form">
+    <mat-form-field appearance="outline">
+      <mat-label>Full Name</mat-label>
+      <input matInput formControlName="name" placeholder="Enter your full name" type="text" />
+      <mat-icon matSuffix>account_circle</mat-icon>
+      <mat-error *ngIf="donorProfileForm.get('name')?.hasError('required')">Full Name is required</mat-error>
+      <mat-error *ngIf="donorProfileForm.get('name')?.hasError('minlength')">Full Name should be at least
+        characters.</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Email</mat-label>
+      <input formControlName="email" matInput placeholder="Enter your email" type="email" />
+      <mat-icon matSuffix>email</mat-icon>
+      <mat-error *ngIf="donorProfileForm.get('email')?.hasError('required')">Email is required</mat-error>
+      <mat-error *ngIf="donorProfileForm.get('email')?.hasError('email')">Invalid email format</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Password</mat-label>
+      <input name="password" type="password" matInput required formControlName="password" />
+      <mat-icon matSuffix>lock</mat-icon>
+      <mat-error *ngIf="donorProfileForm.get('password')?.hasError('required')">Password is
+        required.</mat-error>
+      <mat-error *ngIf="donorProfileForm.get('password')?.hasError('pattern')">
+        Password must include at least 8 characters, a number, an uppercase letter, a lowercase letter, and
+        a special
+        character.
+      </mat-error>
+    </mat-form-field>
+
+    <!-- start here -->
+
+    <mat-form-field appearance="outline">
+      <mat-label>Gender</mat-label>
+      <select matNativeControl formControlName="gender" name="car">
+        <option *ngFor="let item of gender" [value]="item.value">
+          {{item.viewValue}}
+        </option>
+      </select>
+      <mat-error *ngIf="donorProfileForm.get('gender')?.hasError('required')">Please choose gender</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Blood Group</mat-label>
+      <select matNativeControl formControlName="bloodgroup" name="car">
+        <option *ngFor="let item of bloodGroups" [value]="item.value">
+          {{item.viewValue}}
+        </option>
+      </select>
+      <mat-error *ngIf="donorProfileForm.get('bloodgroup')?.hasError('required')">Please choose blood
+        ground</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Date of Birth</mat-label>
+      <input matInput [matDatepicker]="picker" formControlName="dob">
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+      <mat-error *ngIf="donorProfileForm.get('dob')?.hasError('required')">Please choose DOB</mat-error>
+    </mat-form-field>
+
+    <!-- end here -->
+
+    <mat-form-field appearance="outline">
+      <mat-label>Country</mat-label>
+      <input matInput formControlName="country" placeholder="Enter your country" type="text" />
+      <mat-icon matSuffix>flag</mat-icon>
+      <mat-error *ngIf="donorProfileForm.get('country')?.hasError('required')">Country is required</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>City</mat-label>
+      <input matInput formControlName="city" placeholder="Enter your city" type="text" />
+      <mat-icon matSuffix>location_city</mat-icon>
+      <mat-error *ngIf="donorProfileForm.get('city')?.hasError('required')">City is required</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+
+      <mat-label>Address</mat-label>
+      <textarea matInput rows="1" placeholder="Enter your address..." formControlName="address"></textarea>
+      <mat-error *ngIf="donorProfileForm.get('address')?.hasError('required')">Address is required</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Phone</mat-label>
+      <input matInput formControlName="contact" placeholder="Enter your contact number" type="text" />
+      <mat-icon matSuffix>smartphone</mat-icon>
+      <mat-error *ngIf="donorProfileForm.get('contact')?.hasError('required')">Phone number is
+        required</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="field-width-full">
+      <mat-label>Medical History</mat-label>
+      <textarea matInput rows="1" placeholder="e.g., chronic diseases, surgeries, allergies"
+        formControlName="medical_history"></textarea>
+      <mat-error *ngIf="donorProfileForm.get('medical_history')?.hasError('required')">Medical History is
+        required</mat-error>
+    </mat-form-field>
+
+    <div class="register-btn-wrapper">
+      <button [disabled]="!donorProfileForm.valid" type="submit" color="primary" mat-raised-button
+        class="register-button">
+        <mat-icon>save</mat-icon>
+        Update
+      </button>
+    </div>
+  </form>
+</div>
+
+
+<!-- hospital Profile Form -->
+<div *ngIf="enableHospitalFormEdit" class="form-wrapper">
+  <form [formGroup]="hospitalProfileForm" (ngSubmit)="updateDetails()" class="register-form">
+    <mat-form-field appearance="outline">
+      <mat-label>Full Name</mat-label>
+      <input matInput formControlName="name" placeholder="Enter your full name" type="text" />
+      <mat-icon matSuffix>account_circle</mat-icon>
+      <mat-error *ngIf="hospitalProfileForm.get('name')?.hasError('required')">Full Name is required</mat-error>
+      <mat-error *ngIf="hospitalProfileForm.get('name')?.hasError('minlength')">Full Name should be at least
+        characters.</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Email</mat-label>
+      <input formControlName="email" matInput placeholder="Enter your email" type="email" />
+      <mat-icon matSuffix>email</mat-icon>
+      <mat-error *ngIf="hospitalProfileForm.get('email')?.hasError('required')">Email is required</mat-error>
+      <mat-error *ngIf="hospitalProfileForm.get('email')?.hasError('email')">Invalid email format</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Password</mat-label>
+      <input name="password" type="password" matInput required formControlName="password" />
+      <mat-icon matSuffix>lock</mat-icon>
+      <mat-error *ngIf="hospitalProfileForm.get('password')?.hasError('required')">Password is
+        required.</mat-error>
+      <mat-error *ngIf="hospitalProfileForm.get('password')?.hasError('pattern')">
+        Password must include at least 8 characters, a number, an uppercase letter, a lowercase letter, and
+        a special
+        character.
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Country</mat-label>
+      <input matInput formControlName="country" placeholder="Enter your country" type="text" />
+      <mat-icon matSuffix>flag</mat-icon>
+      <mat-error *ngIf="hospitalProfileForm.get('country')?.hasError('required')">Country is required</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>City</mat-label>
+      <input matInput formControlName="city" placeholder="Enter your city" type="text" />
+      <mat-icon matSuffix>location_city</mat-icon>
+      <mat-error *ngIf="hospitalProfileForm.get('city')?.hasError('required')">City is required</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+
+      <mat-label>Address</mat-label>
+      <textarea matInput rows="1" placeholder="Enter your address..." formControlName="address"></textarea>
+      <mat-error *ngIf="hospitalProfileForm.get('address')?.hasError('required')">Address is required</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Phone</mat-label>
+      <input matInput formControlName="contact" placeholder="Enter your contact number" type="text" />
+      <mat-icon matSuffix>smartphone</mat-icon>
+      <mat-error *ngIf="hospitalProfileForm.get('contact')?.hasError('required')">Phone number is
+        required</mat-error>
+    </mat-form-field>
+
+    <div class="register-btn-wrapper">
+      <button [disabled]="!hospitalProfileForm.valid" type="submit" color="primary" mat-raised-button
+        class="register-button">
+        <mat-icon>save</mat-icon>
+        Update
+      </button>
+    </div>
+  </form>
+</div>

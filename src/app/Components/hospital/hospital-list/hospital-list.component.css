@@ -1,0 +1,103 @@
+.table-container {
+    overflow-x: auto;
+    max-height: 600px;
+    overflow-y: auto;
+    display: block;
+    margin-left: 20px;
+    margin-right: 20px;
+  }
+  
+  .pagination {
+    margin: 0px 20px;
+  }
+  
+  table {
+    width: 100%;
+    table-layout: fixed;
+  }
+  
+  th {
+    background-color: rgba(152, 152, 152, 0.537);
+    font-size: 14px;
+    font-weight: 500;
+  }
+  
+  .large th, td {
+    min-width: 20px;
+    white-space: nowrap; 
+    text-overflow: ellipsis; 
+    overflow: hidden;
+  }
+  
+  .img{
+      height: 50px;
+      width: 50px;
+  }
+  .img-order{
+    height: 200px;
+    width: 200px;
+  }
+  
+  .donor-list-heading {
+    display: flex;
+    flex-direction: column;
+    margin: 30px 18px 10px;
+    font-family: "Poppins", sans-serif;
+  }
+  
+  .donor-list-heading h3 {
+    font-size: 36px;
+    font-weight: 600;
+  }
+  
+  .actions-btn {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  }
+  
+  .approve-btn {
+    background-color:green;
+    color: white;
+    border-radius: 10px;
+    border : 1px solid;
+    padding: 5px 10px;
+    width: 40%;
+  }
+  
+  .cancel-btn {
+    background-color:red;
+    color: white;
+    border-radius: 10px;
+    border : 1px solid;
+    width: 40%;
+    padding: 5px 10px;
+  }
+  
+  .action-msg {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    /* margin: 5px 10px; */
+  }
+  
+  .action-msg-green {
+    background-color: green;
+    color: white;
+    font: 10px;
+    border: 1px solid;
+    border-radius: 8px;
+    padding: 2px 4px;
+  }
+  
+  .action-msg-red {
+    background-color: red;
+    color: white;
+    font: 10px;
+    border: 1px solid;
+    padding: 2px 4px;
+    border-radius: 8px;
+  }
+  
+  
