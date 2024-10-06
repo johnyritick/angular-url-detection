@@ -13,11 +13,10 @@ export class HomePageComponent implements OnInit {
 
   ngOnInit(): void {
     // set admin data
-    this.user.setAdmin()
   }
 
   redirectToLoginScreen() {
-    this.router.navigate(['accounts/login'])
+    this.router.navigate(['auth/login'])
   }
 
 }

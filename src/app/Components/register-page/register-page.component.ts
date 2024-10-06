@@ -45,7 +45,7 @@ export class RegisterPageComponent implements OnInit {
           this.result = response
           console.log(this.result)
           this.openSnackBar('Registered Successfully', 'Ok')
-          this.router.navigate(['accounts/login'])
+          this.router.navigate(['auth/login'])
         },
         error: (error) => {
           this.openSnackBar(String(error).substring(7), 'Ok')

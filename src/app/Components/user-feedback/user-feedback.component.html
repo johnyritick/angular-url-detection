@@ -1,0 +1,28 @@
+<div class="min-w-[1200px] flex flex-row">
+    <div class="container mx-auto px-6 py-10">
+        <!-- Section Title -->
+        <h2 class="text-3xl font-bold text-center text-gray-900 mb-10">User Feedback</h2>
+
+        <!-- Feedback Cards Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <!-- Iterate over dataSource using *ngFor -->
+            <div *ngFor="let feedback of dataSource"
+                class="bg-white border border-[#D9AA00] rounded-lg p-6 text-center shadow-lg card">
+                <!-- Profile Image -->
+                <div class="flex justify-center mb-4">
+                    <img src="https://via.placeholder.com/100" alt="Profile Picture"
+                        class="rounded-full border-4 border-[#D9AA00] w-24 h-24" />
+                </div>
+                <!-- User Info -->
+                <h3 class="text-lg font-semibold text-gray-800">{{ feedback.name }}</h3>
+                <p class="text-sm text-gray-600">{{ feedback.email }}</p>
+                <!-- View More Button -->
+                <button
+                    class="bg-[#D9AA00] text-white font-semibold py-2 px-4 rounded-lg mt-4 shadow hover:bg-yellow-600 transition">
+                    View More
+                </button>
+            </div>
+        </div>
+    </div>
+
+</div>

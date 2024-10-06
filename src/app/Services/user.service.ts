@@ -7,6 +7,7 @@ import { Injectable } from '@angular/core'
 import { BehaviorSubject, catchError, throwError, retry } from 'rxjs'
 import { User } from '../Models/user'
 import { DonorInfo } from '../Models/donor'
+import { Router } from '@angular/router'
 const httpOptions = {
   headers: new HttpHeaders({
     'Content-Type': 'application/json',
@@ -16,7 +17,7 @@ const httpOptions = {
   providedIn: 'root',
 })
 export class UserService {
-  baseAuthUrl = 'http://localhost:8080/api/v2'
+  baseAuthUrl = 'http://0.0.0.0:80/'
   httpOptions: any = {
     headers: new HttpHeaders({
       Authorization: `Bearer ${this.getToken()}`,
@@ -26,6 +27,8 @@ export class UserService {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
   }
   isLogged = new BehaviorSubject<boolean>(this.isLoggedIn())
+  isAdmin = new BehaviorSubject<boolean>(this.isAdminRole())
+  isUser = new BehaviorSubject<boolean>(this.isUserRole())
   UserName = new BehaviorSubject<string | null>(
     localStorage.getItem('userName'),
   )
@@ -35,21 +38,23 @@ export class UserService {
   result: any
   valid: boolean = false
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private router: Router) {
+
+  }
 
 
   getAllUsers() {
     return this.http.get<User[]>(`${this.baseAuthUrl}/users/all`)
   }
 
-  register(user: User) {
+  register(user: { email: string, password: string, full_name: string }) {
     return this.http
-      .post('https://58196afff7f741a58e667a248efed4f4.api.mockbin.io/', user, this.httpregOptions)
+      .post(this.baseAuthUrl + "auth/register", user)
       .pipe(retry(1), catchError(this.handleError))
   }
 
-  doLogin(user: User) {
-    return this.http.post('https://c7bc3800d05e4e208717ec7774fb0773.api.mockbin.io/', user)
+  doLogin(user: { email: string, password: string }) {
+    return this.http.post(this.baseAuthUrl + "auth/login", user)
   }
 
   validateToken() {
@@ -64,7 +69,7 @@ export class UserService {
   getUser(email: string = "") {
     let donorsData = JSON.parse(localStorage.getItem("donorsList") || "[]");
     let currentUserEmail = email;
-    if(email === "") {
+    if (email === "") {
       currentUserEmail = localStorage.getItem('email') || "";
     }
     if (donorsData === null || !donorsData.length || currentUserEmail === null || currentUserEmail === '') {
@@ -90,13 +95,12 @@ export class UserService {
   }
 
   //for login user
-  loginUser(token: string, email: string, userName: string, password: string, role: string) {
+  loginUser(token: string, email: string, password: string, role: string) {
     this.isLogged.next(true)
     localStorage.setItem('isLogged', '1')
     localStorage.setItem('token', token)
+    localStorage.setItem('userName', email)
     localStorage.setItem('email', email)
-    localStorage.setItem('userName', userName)
-    localStorage.setItem('password', password)
     localStorage.setItem('role', role)
     return true
   }
@@ -107,20 +111,35 @@ export class UserService {
       this.valid = false;
     } else {
       let decodedToken = this.parseJwtToken(token);
-      console.log("yaha aaya", decodedToken);
-      if (new Date() < new Date(decodedToken.expired)) {
-        // set the value to true if token is not expired
+      let currentDate = new Date();
+      let expiryDate = new Date(decodedToken.exp * 1000);
+      if (currentDate < expiryDate) {
         this.valid = true;
       } else {
-        // set the value to false if the token has expired
         this.valid = false
+        this.router.navigate(['token-expired'])
       }
     }
     return this.valid;
   }
 
+  isAdminRole() {
+    let role = localStorage.getItem("role")
+    if(role === "admin") return true
+    return false
+  }
+
+  isUserRole() {
+    let role = localStorage.getItem("role")
+    if(role === "user") return true
+    return false
+  }
+
   logout() {
     this.isLogged.next(false)
+    this.isAdmin.next(false)
+    this.isUser.next(false)
+    this.role.next(null)
     localStorage.setItem('isLogged', '0')
     localStorage.removeItem('token')
     localStorage.removeItem('email')
@@ -193,8 +212,8 @@ export class UserService {
     }
   }
 
-  updateDonorsDetails(payload: DonorInfo[]){
-    localStorage.setItem("donorsList",JSON.stringify(payload));
+  updateDonorsDetails(payload: DonorInfo[]) {
+    localStorage.setItem("donorsList", JSON.stringify(payload));
   }
 
   private handleError(error: HttpErrorResponse) {
@@ -221,52 +240,26 @@ export class UserService {
     }
   }
 
-  setAdmin(){
-    localStorage.setItem("adminList", JSON.stringify([
-      {
-        "id": 123,
-        "name": "Admin",
-        "email": "admin@gmail.com",
-        "password": "Test@123",
-        "confirmPassword": "Test@123",
-        "contact": "08004367180",
-        "gender": "male",
-        "dob": "08-08-2024",
-        "bloodgroup": "O+",
-        "medical_history": "None",
-        "unit": "2",
-        "role" : "admin",
-        "requestedDate": "2024-08-30T18:30:00.000Z",
-        "created_at": "2024-08-16T03:44:37.158Z",
-        "updated_at": "2024-08-16T03:44:37.158Z",
-        "status": "Accepted",
-        "city": "MAUNATH BHANJAN",
-        "country": "India",
-        "address": "D/13, Power House Colony, Nizzamuddinpura"
-      }
-    ]))
-  }
-
   validateAdmin(email: string, password: string) {
     let adminData = JSON.parse(localStorage.getItem("adminList") || "[]")
 
-    if(adminData === null || !adminData.length) {
+    if (adminData === null || !adminData.length) {
       return {
-        "success" : false,
-        "message" : "Admin not found"
+        "success": false,
+        "message": "Admin not found"
       }
     } else {
-      if(adminData[0].email === email && adminData[0].password === password) {
+      if (adminData[0].email === email && adminData[0].password === password) {
         return {
-          "success" : true,
-          "message" : "Logged In",
-          "auth_token" : "eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiYWRtaW4iLCJleHBpcmVkIjoiMjAyNi0wOC0xNFQxMDozMTozNi43MjBaIiwidXBkYXRlZF9hdCI6IjIwMjQtMDgtMTZUMDM6NDQ6MzcuMTU4WiIsIm5hbWUiOiJBZG1pbiIsImNyZWF0ZWRfYXQiOiIyMDI0LTA4LTE2VDAzOjQ0OjM3LjE1OFoiLCJpc3N1ZXIiOiJSaXRpY2siLCJlbWFpbCI6ImFkbWluQGdtYWlsLmNvbSJ9.EhcxHSSGjBk9BcxWcQMCTCttg7ajkTK4EmZP0X08UL4",
-          "user_details" : adminData[0]
+          "success": true,
+          "message": "Logged In",
+          "auth_token": "eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiYWRtaW4iLCJleHBpcmVkIjoiMjAyNi0wOC0xNFQxMDozMTozNi43MjBaIiwidXBkYXRlZF9hdCI6IjIwMjQtMDgtMTZUMDM6NDQ6MzcuMTU4WiIsIm5hbWUiOiJBZG1pbiIsImNyZWF0ZWRfYXQiOiIyMDI0LTA4LTE2VDAzOjQ0OjM3LjE1OFoiLCJpc3N1ZXIiOiJSaXRpY2siLCJlbWFpbCI6ImFkbWluQGdtYWlsLmNvbSJ9.EhcxHSSGjBk9BcxWcQMCTCttg7ajkTK4EmZP0X08UL4",
+          "user_details": adminData[0]
         }
       } else {
         return {
-          "success" : false,
-          "message" : "Password not matched"
+          "success": false,
+          "message": "Password not matched"
         }
       }
     }

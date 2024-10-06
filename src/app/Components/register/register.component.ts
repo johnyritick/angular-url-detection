@@ -18,91 +18,79 @@ interface SelectInput {
 })
 
 export class RegisterComponent implements OnInit {
+  name: string
+  email: string
+  password: string
+  hidePassword: boolean
 
   constructor(
     private fb: FormBuilder,
     private router: Router,
     private _snackBar: MatSnackBar,
-    private userService: UserService,
-    private datePipe: DatePipe
-  ) { }
-  passwordTyped: string = ''
-  donorRegisterForm = this.fb.group({
-    name: ['', [Validators.required, Validators.minLength(2)]],
-    email: ['', [Validators.required, Validators.email]],
-    password: [
-      '',
-      [
-        Validators.required,
-        Validators.pattern(
-          /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{8,15}$/,
-        ),
-      ],
-    ],
-    confirmPassword: ['', [Validators.required]],
-    contact: ['', [Validators.required]],
-    gender: ['', [Validators.required]],
-    dob: ['', [Validators.required]],
-    blood: ['', [Validators.required]],
-    medical_history: ['', [Validators.required]],
-    city: ['', [Validators.required]],
-    country: ['', [Validators.required]],
-    address: ['', [Validators.required]]
-  })
+    private userService: UserService
+  ) {
+    this.name = ""
+    this.email = ""
+    this.password = ""
+    this.hidePassword = false
+  }
 
-  gender: SelectInput[] = [
-    { value: 'male', viewValue: 'Male' },
-    { value: 'female', viewValue: 'Female' },
-    { value: 'others', viewValue: 'Others' },
-  ];
+  ngOnInit(): void {
 
-
-  bloodGroups: SelectInput[] = [
-    { value: 'A+', viewValue: 'A Positive' },
-    { value: 'A-', viewValue: 'A Negative' },
-    { value: 'B+', viewValue: 'B Positive' },
-    { value: 'B-', viewValue: 'B Negative' },
-    { value: 'AB+', viewValue: 'AB Positive' },
-    { value: 'AB-', viewValue: 'AB Negative' },
-    { value: 'O+', viewValue: 'O Positive' },
-    { value: 'O-', viewValue: 'O Negative' }
-  ];
-
-  result: any
-  ngOnInit(): void { }
+  }
 
   register() {
-    let payload = {
-      ...this.donorRegisterForm.value,
-      "dob": this.datePipe.transform(this.donorRegisterForm.value['dob'], 'dd-MM-yyyy'),
-      "role": "donor",
-      "created_at" : new Date(),
-      "updated_at" : new Date(),
+    let validate = this.validateFormData()
+    if (validate.success) {
+      this.userService.register({ full_name: this.name, email: this.email, password: this.password }).subscribe({
+        next: (response: any) => {
+          
+          if (response.success) {
+            
+            this.openSnackBar(response.message, 'Ok', true)
+            this.name = ""
+            this.email = ""
+            this.password = ""
+            // this.router.navigate(['dashboard'])
+          } else {
+            this.openSnackBar(response.message, 'Ok')
+          }
+        },
+        error: (error) => {
+          this.openSnackBar(error.error.message, 'Ok')
+        }
+      })
+    } else {
+      this.openSnackBar(validate.message, 'Ok')
     }
-    this.userService.register(payload).subscribe({
-      next: (response) => {
-        this.result = response
-        this.openSnackBar('Registered Successfully', 'Ok')
-        this.router.navigate(['accounts/login'])
-        this.userService.addUserToLocalStorage(payload);
-      },
-      error: (error) => {
-        this.openSnackBar(String(error).substring(7), 'Ok')
-      },
-      complete: () => {
-        // complete sentence
-      }
-    })
+
   }
 
-  openSnackBar(message: string, action: string) {
+  validateFormData() {
+    if (this.name.trim().length === 0) {
+      return { success: false, "message": "Name is Missing" }
+    }
+    if (this.email.trim().length === 0) {
+      return { success: false, "message": "Email is Missing" }
+    }
+    if (this.password.trim().length === 0) {
+      return { success: false, "message": "Password is Missing" }
+    }
+    return { success: true, "message": "All Good" }
+  }
+
+  redirectToLogin() {
+    this.router.navigate(['auth/login'])
+  }
+
+  togglePasswordView() {
+    this.hidePassword = !this.hidePassword
+  }
+
+  openSnackBar(message: string, action: string, isSuccess: boolean = false) {
     this._snackBar.open(message, action, {
-      duration: 3000,
-      panelClass: ['blue-snackbar'],
+      duration: 2000,
+      panelClass: isSuccess ? ['green-snackbar'] : ['red-snackbar'],
     })
-  }
-
-  onChange(): void {
-    this.passwordTyped = this.donorRegisterForm.value.password
   }
 }

@@ -13,7 +13,7 @@ export class ToolbarComponent {
   UserName$: any
   role$: any
   isAdmin: boolean = false
-  isDonor: boolean = false
+  isUser: boolean = false
   isHospital: boolean = false
   name: string = ""
   constructor(private user: UserService, private router: Router) { }
@@ -27,8 +27,8 @@ export class ToolbarComponent {
     if (this.role$.source._value == "admin") {
       this.isAdmin = true;
       console.log(this.isAdmin)
-    } else if (this.role$.source._value == "donor") {
-      this.isDonor = true;
+    } else if (this.role$.source._value == "user") {
+      this.isUser = true;
     } else if (this.role$.source._value == "hospital") {
       this.isHospital = true;
       console.log("role_1",this.role$.source._value);
@@ -43,6 +43,6 @@ export class ToolbarComponent {
   logout() {
     this.user.logout()
     this.ngOnInit()
-    this.router.navigate(['accounts/login'])
+    this.router.navigate(['auth/login'])
   }
 }

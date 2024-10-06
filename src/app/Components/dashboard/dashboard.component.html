@@ -1,260 +1,140 @@
-<div class="container-appointment">
-  <div class="left">
-    <img src="assets/images/man.png" alt="User Avatar" class="login-img" />
-    <h2 class="register-title">{{currentUser.name}}</h2>
-    <button *ngIf="currentUser.role !=='admin'" mat-button color="primary" (click)="openEditForm()">
-      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pen"
-        viewBox="0 0 16 16">
-        <path
-          d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001m-.644.766a.5.5 0 0 0-.707 0L1.95 11.756l-.764 3.057 3.057-.764L14.44 3.854a.5.5 0 0 0 0-.708z" />
-      </svg>
-      Edit Details</button>
-  </div>
-  <div class="right">
-    <div class="modal-body">
-      <div class="user-details">
-        <div class="detail-item">
-          <span class="detail-title">Donor ID:</span>
-          <span class="detail-value">{{this.currentUser.name}}</span>
-        </div>
-        <div class="detail-item">
-          <span class="detail-title">Email:</span>
-          <span class="detail-value">{{this.currentUser.email}}</span>
-        </div>
-        <div *ngIf="this.currentUser.contact" class="detail-item">
-          <span class="detail-title">Phone Number:</span>
-          <span class="detail-value">{{this.currentUser.contact}}</span>
-        </div>
-        <div *ngIf="this.currentUser.role === 'donor'" class="detail-item">
-          <span class="detail-title">Gender:</span>
-          <span class="detail-value">{{this.currentUser.gender}}</span>
-        </div>
-        <div *ngIf="this.currentUser.role === 'donor'" class="detail-item">
-          <span class="detail-title">Date of Birth:</span>
-          <span class="detail-value">{{this.currentUser.dob}}</span>
+<div class="min-w-[1000px]">
+    <div class="flex flex-col py-10 ml-4">
+        <div class="flex flex-row justify-between">
+            <p class="text-[32px] font-[600] text-black">
+                User Activity
+            </p>
+            <div>
+                <input id="email" type="text" placeholder="Search Email" [(ngModel)]="email"
+                    (keypress)="searchUser($event)"
+                    class="min-w-[250px] border border-gray-300 rounded-full py-[10px] px-[10px] text-gray-800 text-[14px] focus:outline-none focus:ring-2 focus:ring-[#D9AA00]" />
+                <a href="javascript:void(0)" (click)="clearTextField()"
+                    class="cursor-pointer text-[14px] text-red-600 pl-6" *ngIf="email.trim().length">Clear</a>
+            </div>
         </div>
 
-        <div *ngIf="this.currentUser.role === 'donor'" class="detail-item">
-          <span class="detail-title">Blood Group:</span>
-          <span class="detail-value">{{this.currentUser.dob}}</span>
-        </div>
+        <div *ngIf="dataSource.length" class="table-container p-2 rounded-lg mt-10 justify-center">
+            <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 w-full rounded-lg overflow-hidden">
+                <!-- Key Column -->
+                <ng-container matColumnDef="s_no" class="small">
+                    <th mat-header-cell *matHeaderCellDef class="bg-[#D9AA00] text-white py-4 px-6 text-left">
+                        S. No
+                    </th>
+                    <td mat-cell *matCellDef="let element" class="py-4 px-6 border-b border-gray-200 text-gray-800">
+                        {{element.s_no}}
+                    </td>
+                </ng-container>
 
-        <div class="detail-item">
-          <span class="detail-title">Registration Date:</span>
-          <span class="detail-value">{{this.currentUser.created_at}}</span>
-        </div>
+                <!-- Value Column -->
+                <ng-container matColumnDef="name" class="large">
+                    <th mat-header-cell *matHeaderCellDef class="bg-[#D9AA00] text-white py-4 px-6 text-left">
+                        Name
+                    </th>
+                    <td mat-cell *matCellDef="let element" class="py-4 px-6 border-b border-gray-200 text-gray-800">
+                        {{element.name}}
+                    </td>
+                </ng-container>
 
-        <div class="detail-item">
-          <span class="detail-title">Last Updated:</span>
-          <span class="detail-value">{{this.currentUser.updated_at}}</span>
-        </div>
+                <ng-container matColumnDef="email" class="large">
+                    <th mat-header-cell *matHeaderCellDef class="bg-[#D9AA00] text-white py-4 px-6 text-left">
+                        Email
+                    </th>
+                    <td mat-cell *matCellDef="let element" class="py-4 px-6 border-b border-gray-200 text-gray-800">
+                        {{element.email}}
+                    </td>
+                </ng-container>
 
-        <div class="detail-item">
-          <span class="detail-title">City:</span>
-          <span class="detail-value">{{this.currentUser.city}}</span>
-        </div>
+                <ng-container matColumnDef="url" class="large">
+                    <th mat-header-cell *matHeaderCellDef class="bg-[#D9AA00] text-white py-4 px-6 text-left">
+                        Url
+                    </th>
+                    <td mat-cell *matCellDef="let element" class="py-4 px-6 border-b border-gray-200 text-gray-800">
+                        {{element.url}}
+                    </td>
+                </ng-container>
 
-        <div class="detail-item">
-          <span class="detail-title">Country:</span>
-          <span class="detail-value">{{this.currentUser.country}}</span>
-        </div>
+                <ng-container matColumnDef="result" class="large">
+                    <th mat-header-cell *matHeaderCellDef class="bg-[#D9AA00] text-white py-4 px-6 text-left">
+                        Result
+                    </th>
+                    <td mat-cell *matCellDef="let element" class="py-4 px-6 border-b border-gray-200 text-gray-800">
+                        {{element.result}}
+                    </td>
+                </ng-container>
 
-        <div class="detail-item">
-          <span class="detail-title">Address:</span>
-          <span class="detail-value">{{this.currentUser.address}}</span>
+                <ng-container matColumnDef="model" class="large">
+                    <th mat-header-cell *matHeaderCellDef class="bg-[#D9AA00] text-white py-4 px-6 text-left">
+                        Model
+                    </th>
+                    <td mat-cell *matCellDef="let element" class="py-4 px-6 border-b border-gray-200 text-gray-800">
+                        {{element.model}}
+                    </td>
+                </ng-container>
+
+                <ng-container matColumnDef="view_more" class="large">
+                    <th mat-header-cell *matHeaderCellDef class="bg-[#D9AA00] text-white py-4 px-6 text-left">
+                        Action
+                    </th>
+                    <td mat-cell *matCellDef="let element" class="py-4 px-6 border-b border-gray-200 text-gray-800">
+                        <button class="text-white text-[12px] bg-blue-600 px-4 py-2 rounded-[20px]"
+                            (click)="viewMoreAction(element.view_more)">
+                            View More
+                        </button>
+                    </td>
+                </ng-container>
+
+                <!-- Header and Row Definitions -->
+                <tr mat-header-row *matHeaderRowDef="displayedColumns" class="bg-gray-50"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"
+                    class="hover:bg-gray-100 transition ease-in-out duration-300"></tr>
+            </table>
         </div>
-      </div>
     </div>
-  </div>
-</div>
 
-<!-- Appointment card starts here -->
-<div class="custom-badge" *ngIf="enableDonorFormEdit">
-  <h4>Fill the Details</h4>
-</div>
+    <div *ngIf="isModalOpen" class="random-modal-overlay">
+        <div class="random-modal min-w-[700px]">
+            <div class="random-modal-header">
+                <h2>URL Details</h2>
+                <button (click)="closeModal()" class="random-btn-close">&times;</button>
+            </div>
+            <div class="random-modal-body">
+                <div *ngIf="dataSource.length" class="table-container p-2 rounded-lg max-h-[400px] overflow-y-auto">
+                    <table mat-table [dataSource]="modalDataSource"
+                        class="mat-elevation-z8 w-full rounded-lg overflow-hidden">
+                        <!-- Key Column -->
+                        <ng-container matColumnDef="key" class="small">
+                            <th mat-header-cell *matHeaderCellDef class="bg-[#D9AA00] text-white py-4 px-6 text-left">
+                                Key
+                            </th>
+                            <td mat-cell *matCellDef="let element"
+                                class="py-4 px-6 border-b border-gray-200 text-gray-800">
+                                {{element.key}}
+                            </td>
+                        </ng-container>
 
-<!-- donor ProfileForm -->
-<div *ngIf="enableDonorFormEdit" class="form-wrapper">
-  <form [formGroup]="donorProfileForm" (ngSubmit)="updateDetails()" class="register-form">
-    <mat-form-field appearance="outline">
-      <mat-label>Full Name</mat-label>
-      <input matInput formControlName="name" placeholder="Enter your full name" type="text" />
-      <mat-icon matSuffix>account_circle</mat-icon>
-      <mat-error *ngIf="donorProfileForm.get('name')?.hasError('required')">Full Name is required</mat-error>
-      <mat-error *ngIf="donorProfileForm.get('name')?.hasError('minlength')">Full Name should be at least
-        characters.</mat-error>
-    </mat-form-field>
+                        <!-- Value Column -->
+                        <ng-container matColumnDef="value" class="large">
+                            <th mat-header-cell *matHeaderCellDef class="bg-[#D9AA00] text-white py-4 px-6 text-left">
+                                Value
+                            </th>
+                            <td mat-cell *matCellDef="let element"
+                                class="py-4 px-6 border-b border-gray-200 text-gray-800">
+                                {{element.value}}
+                            </td>
+                        </ng-container>
 
-    <mat-form-field appearance="outline">
-      <mat-label>Email</mat-label>
-      <input formControlName="email" matInput placeholder="Enter your email" type="email" />
-      <mat-icon matSuffix>email</mat-icon>
-      <mat-error *ngIf="donorProfileForm.get('email')?.hasError('required')">Email is required</mat-error>
-      <mat-error *ngIf="donorProfileForm.get('email')?.hasError('email')">Invalid email format</mat-error>
-    </mat-form-field>
-
-    <mat-form-field appearance="outline">
-      <mat-label>Password</mat-label>
-      <input name="password" type="password" matInput required formControlName="password" />
-      <mat-icon matSuffix>lock</mat-icon>
-      <mat-error *ngIf="donorProfileForm.get('password')?.hasError('required')">Password is
-        required.</mat-error>
-      <mat-error *ngIf="donorProfileForm.get('password')?.hasError('pattern')">
-        Password must include at least 8 characters, a number, an uppercase letter, a lowercase letter, and
-        a special
-        character.
-      </mat-error>
-    </mat-form-field>
-
-    <!-- start here -->
-
-    <mat-form-field appearance="outline">
-      <mat-label>Gender</mat-label>
-      <select matNativeControl formControlName="gender" name="car">
-        <option *ngFor="let item of gender" [value]="item.value">
-          {{item.viewValue}}
-        </option>
-      </select>
-      <mat-error *ngIf="donorProfileForm.get('gender')?.hasError('required')">Please choose gender</mat-error>
-    </mat-form-field>
-
-    <mat-form-field appearance="outline">
-      <mat-label>Blood Group</mat-label>
-      <select matNativeControl formControlName="bloodgroup" name="car">
-        <option *ngFor="let item of bloodGroups" [value]="item.value">
-          {{item.viewValue}}
-        </option>
-      </select>
-      <mat-error *ngIf="donorProfileForm.get('bloodgroup')?.hasError('required')">Please choose blood
-        ground</mat-error>
-    </mat-form-field>
-
-    <mat-form-field appearance="outline">
-      <mat-label>Date of Birth</mat-label>
-      <input matInput [matDatepicker]="picker" formControlName="dob">
-      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-      <mat-datepicker #picker></mat-datepicker>
-      <mat-error *ngIf="donorProfileForm.get('dob')?.hasError('required')">Please choose DOB</mat-error>
-    </mat-form-field>
-
-    <!-- end here -->
-
-    <mat-form-field appearance="outline">
-      <mat-label>Country</mat-label>
-      <input matInput formControlName="country" placeholder="Enter your country" type="text" />
-      <mat-icon matSuffix>flag</mat-icon>
-      <mat-error *ngIf="donorProfileForm.get('country')?.hasError('required')">Country is required</mat-error>
-    </mat-form-field>
-
-    <mat-form-field appearance="outline">
-      <mat-label>City</mat-label>
-      <input matInput formControlName="city" placeholder="Enter your city" type="text" />
-      <mat-icon matSuffix>location_city</mat-icon>
-      <mat-error *ngIf="donorProfileForm.get('city')?.hasError('required')">City is required</mat-error>
-    </mat-form-field>
-
-    <mat-form-field appearance="outline">
-
-      <mat-label>Address</mat-label>
-      <textarea matInput rows="1" placeholder="Enter your address..." formControlName="address"></textarea>
-      <mat-error *ngIf="donorProfileForm.get('address')?.hasError('required')">Address is required</mat-error>
-    </mat-form-field>
-
-    <mat-form-field appearance="outline">
-      <mat-label>Phone</mat-label>
-      <input matInput formControlName="contact" placeholder="Enter your contact number" type="text" />
-      <mat-icon matSuffix>smartphone</mat-icon>
-      <mat-error *ngIf="donorProfileForm.get('contact')?.hasError('required')">Phone number is
-        required</mat-error>
-    </mat-form-field>
-
-    <mat-form-field appearance="outline" class="field-width-full">
-      <mat-label>Medical History</mat-label>
-      <textarea matInput rows="1" placeholder="e.g., chronic diseases, surgeries, allergies"
-        formControlName="medical_history"></textarea>
-      <mat-error *ngIf="donorProfileForm.get('medical_history')?.hasError('required')">Medical History is
-        required</mat-error>
-    </mat-form-field>
-
-    <div class="register-btn-wrapper">
-      <button [disabled]="!donorProfileForm.valid" type="submit" color="primary" mat-raised-button
-        class="register-button">
-        <mat-icon>save</mat-icon>
-        Update
-      </button>
+                        <!-- Header and Row Definitions -->
+                        <tr mat-header-row *matHeaderRowDef="modalColumns" class="bg-gray-50"></tr>
+                        <tr mat-row *matRowDef="let row; columns: modalColumns;"
+                            class="hover:bg-gray-100 transition ease-in-out duration-300"></tr>
+                    </table>
+                </div>
+            </div>
+            <div class="random-modal-footer">
+                <button (click)="closeModal()" class="bg-gray-600 text-white px-6 py-2 rounded-[20px]">
+                    Close
+                </button>
+            </div>
+        </div>
     </div>
-  </form>
-</div>
-
-
-<!-- hospital Profile Form -->
-<div *ngIf="enableHospitalFormEdit" class="form-wrapper">
-  <form [formGroup]="hospitalProfileForm" (ngSubmit)="updateDetails()" class="register-form">
-    <mat-form-field appearance="outline">
-      <mat-label>Full Name</mat-label>
-      <input matInput formControlName="name" placeholder="Enter your full name" type="text" />
-      <mat-icon matSuffix>account_circle</mat-icon>
-      <mat-error *ngIf="hospitalProfileForm.get('name')?.hasError('required')">Full Name is required</mat-error>
-      <mat-error *ngIf="hospitalProfileForm.get('name')?.hasError('minlength')">Full Name should be at least
-        characters.</mat-error>
-    </mat-form-field>
-
-    <mat-form-field appearance="outline">
-      <mat-label>Email</mat-label>
-      <input formControlName="email" matInput placeholder="Enter your email" type="email" />
-      <mat-icon matSuffix>email</mat-icon>
-      <mat-error *ngIf="hospitalProfileForm.get('email')?.hasError('required')">Email is required</mat-error>
-      <mat-error *ngIf="hospitalProfileForm.get('email')?.hasError('email')">Invalid email format</mat-error>
-    </mat-form-field>
-
-    <mat-form-field appearance="outline">
-      <mat-label>Password</mat-label>
-      <input name="password" type="password" matInput required formControlName="password" />
-      <mat-icon matSuffix>lock</mat-icon>
-      <mat-error *ngIf="hospitalProfileForm.get('password')?.hasError('required')">Password is
-        required.</mat-error>
-      <mat-error *ngIf="hospitalProfileForm.get('password')?.hasError('pattern')">
-        Password must include at least 8 characters, a number, an uppercase letter, a lowercase letter, and
-        a special
-        character.
-      </mat-error>
-    </mat-form-field>
-
-    <mat-form-field appearance="outline">
-      <mat-label>Country</mat-label>
-      <input matInput formControlName="country" placeholder="Enter your country" type="text" />
-      <mat-icon matSuffix>flag</mat-icon>
-      <mat-error *ngIf="hospitalProfileForm.get('country')?.hasError('required')">Country is required</mat-error>
-    </mat-form-field>
-
-    <mat-form-field appearance="outline">
-      <mat-label>City</mat-label>
-      <input matInput formControlName="city" placeholder="Enter your city" type="text" />
-      <mat-icon matSuffix>location_city</mat-icon>
-      <mat-error *ngIf="hospitalProfileForm.get('city')?.hasError('required')">City is required</mat-error>
-    </mat-form-field>
-
-    <mat-form-field appearance="outline">
-
-      <mat-label>Address</mat-label>
-      <textarea matInput rows="1" placeholder="Enter your address..." formControlName="address"></textarea>
-      <mat-error *ngIf="hospitalProfileForm.get('address')?.hasError('required')">Address is required</mat-error>
-    </mat-form-field>
-
-    <mat-form-field appearance="outline">
-      <mat-label>Phone</mat-label>
-      <input matInput formControlName="contact" placeholder="Enter your contact number" type="text" />
-      <mat-icon matSuffix>smartphone</mat-icon>
-      <mat-error *ngIf="hospitalProfileForm.get('contact')?.hasError('required')">Phone number is
-        required</mat-error>
-    </mat-form-field>
-
-    <div class="register-btn-wrapper">
-      <button [disabled]="!hospitalProfileForm.valid" type="submit" color="primary" mat-raised-button
-        class="register-button">
-        <mat-icon>save</mat-icon>
-        Update
-      </button>
-    </div>
-  </form>
 </div>

@@ -15,50 +15,56 @@ interface SelectInput {
   styleUrls: ['./login.component.css'],
 })
 export class LoginComponent implements OnInit {
-  loginForm = this.fb.group({
-    email: ['', [Validators.required, Validators.email]],
-    password: ['', [Validators.required]],
-    role: ['', [Validators.required]]
-  })
+  email: string
+  password: string
+  hidePassword: boolean
 
   constructor(
     private fb: FormBuilder,
     private router: Router,
     private userService: UserService,
-    private hospitalService: HospitalService,
     private _snackBar: MatSnackBar,
   ) {
+    this.email = ""
+    this.password = ""
+    this.hidePassword = false
+  }
+
+  ngOnInit(): void { 
+    if(localStorage.getItem("adminList")) {
+      localStorage.removeItem("adminList")
+    }
+    if(localStorage.getItem("email")) {
+      localStorage.removeItem("email")
+      localStorage.removeItem('userName')
+    }
+    if(localStorage.getItem("isLogged")) {
+      localStorage.removeItem("isLogged")
+    }
+    if(localStorage.getItem("role")) {
+      localStorage.removeItem("role")
+    }
+    if(localStorage.getItem("token")) {
+      localStorage.removeItem("token")
+    }
 
   }
 
-  ngOnInit(): void { }
-
-  result: any
-  userDetails: any
-  userName: string = ''
-
-  loginRoles: SelectInput[] = [
-    { value: 'donor', viewValue: "Donor" },
-    { value: 'hospital', viewValue: "Hospital" },
-    { value: 'admin', viewValue: "Admin" }
-  ]
-
   login() {
-    if (this.loginForm.value.role === "donor") {
-      this.userService.doLogin(this.loginForm.value).subscribe({
+    let validate = this.validateFormData()
+    if (validate.success) {
+      this.userService.doLogin({ email: this.email, password : this.password }).subscribe({
         next: (response: any) => {
-          this.userDetails = this.userService.parseJwtToken(response.auth_token)
+          let userDetails = this.userService.parseJwtToken(response.token)
           if (response.success) {
-            this.userName = this.userDetails.name
             this.userService.loginUser(
-              response.auth_token,
-              this.loginForm.value.email,
-              this.userName,
-              this.loginForm.value.password,
-              this.userDetails.role,
+              response.token,
+              this.email,
+              this.password,
+              userDetails.role,
             )
-            this.openSnackBar(response.message, 'Ok', true)
-            this.router.navigate(['dashboard'])
+            this.openSnackBar("Logged In Successfully", 'Ok', true)
+            this.router.navigate(['panel/url-detector'])
           } else {
             this.openSnackBar(response.message, 'Ok')
           }
@@ -67,38 +73,38 @@ export class LoginComponent implements OnInit {
           this.openSnackBar(error.error.message, 'Ok')
         }
       })
-    } else if (this.loginForm.value.role === "admin") {
-
-      let response = this.userService.validateAdmin(this.loginForm.value.email, this.loginForm.value.password)
-      console.log("e", response);
-
-      this.setDataIntoLocalStorage(response)
     } else {
-      let response: any = this.hospitalService.login(this.loginForm.value)
-      this.setDataIntoLocalStorage(response);
+      this.openSnackBar(validate.message, 'Ok')
     }
+
   }
+
+  validateFormData() {
+    if (this.email.trim().length === 0) {
+      return { success: false, "message": "Email is Missing" }
+    }
+    if (this.password.trim().length === 0) {
+      return { success: false, "message": "Password is Missing" }
+    }
+    return { success: true, "message": "All Good" }
+  }
+
+  redirectToRegister() {
+    this.router.navigate(['register'])
+  }
+
+  redirectToResetPassword() {
+    this.router.navigate(['forgot-password'])
+  }
+
+  togglePasswordView() {
+    this.hidePassword = !this.hidePassword
+  }
+
   openSnackBar(message: string, action: string, isSuccess: boolean = false) {
     this._snackBar.open(message, action, {
       duration: 2000,
       panelClass: isSuccess ? ['green-snackbar'] : ['red-snackbar'],
     })
-  }
-
-  setDataIntoLocalStorage(response: any) {
-    if (response.success) {
-      this.userName = response.user_details.name
-      this.userService.loginUser(
-        response.auth_token,
-        this.loginForm.value.email,
-        this.userName,
-        this.loginForm.value.password,
-        this.loginForm.value.role,
-      )
-      this.openSnackBar(response.message, 'Ok', true)
-      this.router.navigate(['dashboard'])
-    } else {
-      this.openSnackBar(response.message, 'Ok')
-    }
   }
 }

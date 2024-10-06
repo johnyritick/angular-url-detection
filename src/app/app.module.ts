@@ -32,7 +32,17 @@ import { CustomModalComponent } from './Components/custom-modal/custom-modal.com
 import { HospitalListComponent } from './Components/hospital/hospital-list/hospital-list.component';
 import { InventoryComponent } from './Components/inventory/inventory.component';
 import { HospitalRegistrationComponent } from './Components/hospital/hospital-registration/hospital-registration.component';
-import { RequestBloodComponent } from './Components/hospital/request-blood/request-blood.component'
+import { RequestBloodComponent } from './Components/hospital/request-blood/request-blood.component';
+import { UrlDetectorComponent } from './Components/url-detector/url-detector.component';
+import { BulkUrlDetectorComponent } from './Components/bulk-url-detector/bulk-url-detector.component';
+import { TokenExpiredComponent } from './Components/token-expired/token-expired.component';
+import { ForgotPasswordComponent } from './Components/forgot-password/forgot-password.component'
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { FaqComponent } from './Components/faq/faq.component';
+import { UrlFeedbackComponent } from './Components/url-feedback/url-feedback.component';
+import { UserFeedbackComponent } from './Components/user-feedback/user-feedback.component';
+import { CustomGraphComponent } from './Components/custom-graph/custom-graph.component';
+import { ManagerUserComponent } from './Components/manager-user/manager-user.component'
 
 @NgModule({
   declarations: [
@@ -56,6 +66,15 @@ import { RequestBloodComponent } from './Components/hospital/request-blood/reque
     InventoryComponent,
     RequestBloodComponent,
     HospitalRegistrationComponent,
+    UrlDetectorComponent,
+    BulkUrlDetectorComponent,
+    TokenExpiredComponent,
+    ForgotPasswordComponent,
+    FaqComponent,
+    UrlFeedbackComponent,
+    UserFeedbackComponent,
+    CustomGraphComponent,
+    ManagerUserComponent,
   ],
   imports: [
     BrowserModule,
@@ -71,6 +90,7 @@ import { RequestBloodComponent } from './Components/hospital/request-blood/reque
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
+    MatProgressSpinnerModule
   ],
   providers: [
     {  

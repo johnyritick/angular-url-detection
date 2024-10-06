@@ -1,4 +1,5 @@
 import { DatePipe } from '@angular/common';
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -21,169 +22,135 @@ interface SelectInput {
 })
 export class DashboardComponent implements OnInit {
   loading: boolean = true;
-  enableDonorFormEdit: boolean;
-  enableAdminFormEdit: boolean;
-  enableHospitalFormEdit: boolean;
-  currentUser: any = {};
+  isModalOpen: boolean
+  email: string
+  dataSource: {}[] = []
+  modalDataSource: {}[] = []
 
-  donorProfileForm = this.fb.group({
-    name: ['', [Validators.required, Validators.minLength(2)]],
-    email: ['', [Validators.required, Validators.email]],
-    password: [
-      '',
-      [
-        Validators.required,
-        Validators.pattern(
-          /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{8,15}$/,
-        ),
-      ],
-    ],
-    contact: ['', [Validators.required]],
-    gender: ['', [Validators.required]],
-    dob: ['', [Validators.required]],
-    bloodgroup: ['', [Validators.required]],
-    medical_history: ['', [Validators.required]],
-    city: ['', [Validators.required]],
-    country: ['', [Validators.required]],
-    address: ['', [Validators.required]]
-  })
-
-  hospitalProfileForm = this.fb.group({
-    name: ['', [Validators.required, Validators.minLength(2)]],
-    email: ['', [Validators.required, Validators.email]],
-    password: [
-      '',
-      [
-        Validators.required,
-        Validators.pattern(
-          /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{8,15}$/,
-        ),
-      ],
-    ],
-    contact: ['', [Validators.required]],
-    city: ['', [Validators.required]],
-    country: ['', [Validators.required]],
-    address: ['', [Validators.required]]
-  })
-
-  gender: SelectInput[] = [
-    { value: 'male', viewValue: 'Male' },
-    { value: 'female', viewValue: 'Female' },
-    { value: 'others', viewValue: 'Others' },
+  displayedColumns: string[] = [
+    "s_no", "name", "email", "url", "result", "model", "view_more"
   ];
 
-  bloodGroups: SelectInput[] = [
-    { value: 'A+', viewValue: 'A Positive' },
-    { value: 'A-', viewValue: 'A Negative' },
-    { value: 'B+', viewValue: 'B Positive' },
-    { value: 'B-', viewValue: 'B Negative' },
-    { value: 'AB+', viewValue: 'AB Positive' },
-    { value: 'AB-', viewValue: 'AB Negative' },
-    { value: 'O+', viewValue: 'O Positive' },
-    { value: 'O-', viewValue: 'O Negative' }
-  ];
+  modalColumns: string[] = [
+    'key', 'value'
+  ]
 
   constructor(
     private fb: FormBuilder,
     private userService: UserService,
-    private hospitalService: HospitalService
+    private http: HttpClient,
+    private _snackBar: MatSnackBar
   ) {
-    this.enableDonorFormEdit = false
-    this.enableAdminFormEdit = false
-    this.enableHospitalFormEdit = false
+    this.email = ""
+    this.isModalOpen = false
   }
 
   ngOnInit(): void {
-    this.loading = false
-    this.getCurrentUserDetails()
+    this.getUsersData()
   }
 
-  updateDetails() {
-    if (this.currentUser.role === 'donor') {
-      this.updateHospitalInfo()
-    } else if (this.currentUser.role === 'hospital') {
-      this.updateDonorInfo()
+  getUsersData(filterEmail: string = "") {
+    this.http.get("http://0.0.0.0:80/admin/users").subscribe({
+      next: (response: any) => {
+        if (response.success) {
+          let temp: {}[] = []
+          let countIndex = 1;
+          response.user_data.map((item: any, index: number) => {
+            if (filterEmail === "" || item.email.includes(filterEmail)) {
+              if (item.user_activities.length) {
+                item.user_activities.map((val: any) => {
+                  temp.push({
+                    s_no: countIndex,
+                    name: item.full_name,
+                    email: item.email,
+                    user_id: item.id,
+                    url: val.url ?? "NA",
+                    result: val.result ?? "NA",
+                    model: val.model ?? "NA",
+                    view_more: val.details
+                  })
+                  countIndex++
+                })
+              } else {
+                temp.push({
+                  s_no: countIndex,
+                  name: item.full_name,
+                  email: item.email,
+                  user_id: item.id,
+                  url: "NA",
+                  result: "NA",
+                  model: "NA",
+                  view_more: item
+                })
+                countIndex++
+              }
+
+            }
+          })
+          console.log("temp", temp);
+
+          this.dataSource = temp
+        } else {
+          this.openSnackBar(response.message, "Ok")
+        }
+      },
+      error: (error) => {
+        this.openSnackBar("Failed to get Data", "Ok")
+      },
+      complete: () => {
+        this.loading = false
+      }
+    })
+  }
+
+  searchUser(res: any) {
+    if (res.code === 'Enter') {
+      this.getUsersData(this.email)
     }
   }
 
-  updateHospitalInfo() {
-    let formData = this.hospitalProfileForm.value;
-    let hospitalList = this.hospitalService.getAllHospitalData()
-    let matchingIndex = hospitalList.findIndex((items: Hospital) => items.email === this.currentUser.email)
-
-    let updatedData = {
-      ...hospitalList[matchingIndex],
-      name: formData.name,
-      email: formData.email,
-      password: formData.password,
-      contact: formData.contact,
-      medical_history: formData.medical_history,
-      city: formData.city,
-      country: formData.country,
-      address: formData.address
-    }
-
-    hospitalList = [
-      ...hospitalList.slice(0, matchingIndex),
-      { ...updatedData },
-      ...hospitalList.slice(matchingIndex + 1)
-    ]
-
-    this.currentUser = updatedData
-
-    this.hospitalService.updateHospitalData(hospitalList)
+  clearTextField() {
+    this.email = ""
   }
 
-  updateDonorInfo() {
-    let formData = this.donorProfileForm.value;
-    let donorsList = this.userService.getAllDonors()
-    let matchingIndex = donorsList.findIndex((items: DonorInfo) => items.email === this.currentUser.email)
-
-    let updatedData = {
-      ...donorsList[matchingIndex],
-      name: formData.name,
-      email: formData.email,
-      password: formData.password,
-      contact: formData.contact,
-      gender: formData.gender,
-      dob: formData.dob,
-      bloodgroup: formData.bloodgroup,
-      medical_history: formData.medical_history,
-      city: formData.city,
-      country: formData.country,
-      address: formData.address,
-    }
-    donorsList = [
-      ...donorsList.slice(0, matchingIndex),
-      { ...updatedData },
-      ...donorsList.slice(matchingIndex + 1)
-    ]
-
-    this.currentUser = updatedData
-
-    this.userService.updateDonorsDetails(donorsList)
+  viewMoreAction(item: any) {
+    this.openModal()
+    this.modalDataSource = this.flattenObject(item)
   }
 
-  openEditForm() {
-    if (this.currentUser.role === 'donor') {
-      this.enableDonorFormEdit = true;
-    } else if (this.currentUser.role === 'hospital') {
-      this.enableHospitalFormEdit = true
-    }
+  openModal(): void {
+    this.isModalOpen = true;
   }
 
-  getCurrentUserDetails() {
-    
-    let role = localStorage.getItem("role")
+  // Method to close the modal
+  closeModal(): void {
+    this.isModalOpen = false
+    this.modalDataSource = []
+  }
 
-    if (role === "donor") {
-      this.currentUser = this.userService.getUser()[0]
-      console.log("role", this.currentUser);
-    } else if (role === "hospital") {
-      this.currentUser = this.hospitalService.getHospitalData()[0]
-    } else if (role === "admin") {
-      this.currentUser = (JSON.parse(localStorage.getItem("adminList") || "[]"))[0]
+  flattenObject(obj: any, parentKey = '', result: any = []) {
+    for (let key in obj) {
+      if (obj.hasOwnProperty(key)) {
+        const newKey = parentKey ? `${parentKey}_${key}` : key; // Concatenate parent key with current key using an underscore
+
+        if (typeof obj[key] === 'object' && !Array.isArray(obj[key])) {
+          // Recursively flatten the nested object
+          this.flattenObject(obj[key], newKey, result);
+        } else {
+          // Assign the value to the result object
+          result.push({ "key": newKey, "value": obj[key] })
+        }
+      }
     }
+    return result;
+  }
+
+
+  openSnackBar(message: string, action: string, isSuccess: boolean = false) {
+    this._snackBar.open(message, action, {
+      duration: 2000,
+      panelClass: isSuccess ? ['green-snackbar'] : ['red-snackbar'],
+    })
   }
 
 }

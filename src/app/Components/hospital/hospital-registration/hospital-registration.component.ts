@@ -55,7 +55,7 @@ export class HospitalRegistrationComponent implements OnInit {
       this.result = response
       console.log(this.result)
       this.openSnackBar('Registered Successfully', 'Ok')
-      this.router.navigate(['accounts/login'])
+      this.router.navigate(['auth/login'])
     } else {
       this.openSnackBar(response.message, 'Ok')
     }

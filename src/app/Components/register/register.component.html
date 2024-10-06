@@ -1,117 +1,73 @@
-<form [formGroup]="donorRegisterForm" (ngSubmit)="register()" class="register-form">
-  <mat-form-field appearance="outline">
-    <mat-label>Full Name</mat-label>
-    <input matInput formControlName="name" placeholder="Enter your full name" type="text" />
-    <mat-icon matSuffix>account_circle</mat-icon>
-    <mat-error *ngIf="donorRegisterForm.get('name')?.hasError('required')">Full Name is required</mat-error>
-    <mat-error *ngIf="donorRegisterForm.get('name')?.hasError('minlength')">Full Name should be at least
-      characters.</mat-error>
-  </mat-form-field>
+<div class="min-h-[60%] flex flex-col justify-center items-center ml-[150px] mt-6">
+  <!-- Main Content -->
+  <div class="flex flex-col lg:flex-row justify-between items-center lg:space-x-6 p-8 lg:px-24 lg:py-12">
 
-  <mat-form-field appearance="outline">
-    <mat-label>Email</mat-label>
-    <input formControlName="email" matInput placeholder="Enter your email" type="email" />
-    <mat-icon matSuffix>email</mat-icon>
-    <mat-error *ngIf="donorRegisterForm.get('email')?.hasError('required')">Email is required</mat-error>
-    <mat-error *ngIf="donorRegisterForm.get('email')?.hasError('email')">Invalid email format</mat-error>
-  </mat-form-field>
+    <!-- Left Side (Form) -->
+    <div class="w-full lg:w-1/2 space-y-6">
 
-  <mat-form-field appearance="outline">
-    <mat-label>Password</mat-label>
-    <input name="password" type="password" matInput required formControlName="password" (change)="onChange()" />
-    <mat-icon matSuffix>lock</mat-icon>
-    <mat-error *ngIf="donorRegisterForm.get('password')?.hasError('required')">Password is required.</mat-error>
-    <mat-error *ngIf="donorRegisterForm.get('password')?.hasError('pattern')">
-      Password must include at least 8 characters, a number, an uppercase letter, a lowercase letter, and a special
-      character.
-    </mat-error>
-  </mat-form-field>
+      <!-- Name Field -->
+      <div>
+        <label for="name" class="block text-gray-700 text-[28px] mb-[20px]">Name</label>
+        <input id="name" ype="text" placeholder="Full Name" [(ngModel)]="name"
+          class="w-full border border-gray-300 rounded-full py-[24px] px-[32px] text-gray-800 text-[24px] focus:outline-none focus:ring-2 focus:ring-[#D9AA00]" />
+      </div>
 
-  <mat-form-field appearance="outline">
-    <mat-label>Confirm Password</mat-label>
-    <input name="confirmPassword" type="password" matInput required formControlName="confirmPassword"
-      appConfirmPasswordValidator [password]="passwordTyped" />
-    <mat-icon matSuffix>lock</mat-icon>
-    <mat-error *ngIf="donorRegisterForm.get('confirmPassword')?.hasError('required')">Please re-enter your
-      password.</mat-error>
-    <mat-error *ngIf="donorRegisterForm.get('confirmPassword')?.hasError('confirmPasswordValid')">Passwords didn't
-      match</mat-error>
-  </mat-form-field>
-  <!-- start here -->
+      <!-- Email Field -->
+      <div>
+        <label for="email" class="block text-gray-700 text-[28px] mb-[20px]">Email</label>
+        <input id="email" type="email" placeholder="Enter Email" [(ngModel)]="email"
+          class="w-full border border-gray-300 rounded-full py-[24px] px-[32px] text-gray-800 text-[24px] focus:outline-none focus:ring-2 focus:ring-[#D9AA00]" />
+      </div>
 
-  <mat-form-field appearance="outline">
-    <mat-label>Gender</mat-label>
-    <select matNativeControl formControlName="gender" name="car">
-      <option *ngFor="let item of gender" [value]="item.value">
-        {{item.viewValue}}
-      </option>
-    </select>
-    <mat-error *ngIf="donorRegisterForm.get('gender')?.hasError('required')">Please choose gender</mat-error>
-  </mat-form-field>
+      <!-- Password Field -->
+      <div>
+        <label for="password" class="block text-gray-700 text-lg text-[28px] mb-[20px]">Password</label>
+        <div class="relative">
+          <input id="password" [type]="hidePassword ? 'text' : 'password'" placeholder="●●●●●●●" [(ngModel)]="password"
+            class="w-full border border-gray-300 rounded-full py-[24px] px-[32px] text-[24px] text-gray-800 focus:outline-none focus:ring-2 focus:ring-[#D9AA00]" />
+          <span class="absolute inset-y-0 right-4 flex items-center">
+            <svg *ngIf="hidePassword" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+              (click)="togglePasswordView()" class="bi bi-eye-slash-fill cursor-pointer" viewBox="0 0 16 16">
+              <path
+                d="m10.79 12.912-1.614-1.615a3.5 3.5 0 0 1-4.474-4.474l-2.06-2.06C.938 6.278 0 8 0 8s3 5.5 8 5.5a7 7 0 0 0 2.79-.588M5.21 3.088A7 7 0 0 1 8 2.5c5 0 8 5.5 8 5.5s-.939 1.721-2.641 3.238l-2.062-2.062a3.5 3.5 0 0 0-4.474-4.474z" />
+              <path
+                d="M5.525 7.646a2.5 2.5 0 0 0 2.829 2.829zm4.95.708-2.829-2.83a2.5 2.5 0 0 1 2.829 2.829zm3.171 6-12-12 .708-.708 12 12z" />
+            </svg>
+            <svg *ngIf="!hidePassword" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+              (click)="togglePasswordView()" class="bi bi-eye-fill cursor-pointer" viewBox="0 0 16 16">
+              <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0" />
+              <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8m8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7" />
+            </svg>
+          </span>
+        </div>
+      </div>
 
-  <mat-form-field appearance="outline">
-    <mat-label>Blood Group</mat-label>
-    <select matNativeControl formControlName="blood" name="car">
-      <option *ngFor="let item of bloodGroups" [value]="item.value">
-        {{item.viewValue}}
-      </option>
-    </select>
-    <mat-error *ngIf="donorRegisterForm.get('blood')?.hasError('required')">Please choose blood ground</mat-error>
-  </mat-form-field>
+      <!-- Sign In Button -->
+      <button class="w-full bg-[#D9AA00] text-white rounded-full py-3 text-lg hover:bg-yellow-600 transition mt-[20px]"
+        (click)="register()">
+        Sign Up
+      </button>
 
-  <mat-form-field appearance="outline">
-    <mat-label>Date of Birth</mat-label>
-    <input matInput [matDatepicker]="picker" formControlName="dob">
-    <mat-hint>MM/DD/YYYY</mat-hint>
-    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-    <mat-datepicker #picker></mat-datepicker>
-    <mat-error *ngIf="donorRegisterForm.get('dob')?.hasError('required')">Please choose DOB</mat-error>
-  </mat-form-field>
+      <!-- Divider -->
+      <div class="flex items-center space-x-2">
+        <hr class="flex-grow border-gray-300">
+        <span class="text-sm text-gray-500">or</span>
+        <hr class="flex-grow border-gray-300">
+      </div>
 
-  <!-- end here -->
+      <!-- Sign Up -->
+      <div class="text-center">
+        <p class="text-sm text-gray-500">Already Registered ?
+          <a href="javascript:void(0)" class="text-[#D9AA00] hover:underline" (click)="redirectToLogin()">Login</a>
+        </p>
+      </div>
+    </div>
 
-  <mat-form-field appearance="outline">
-    <mat-label>Country</mat-label>
-    <input matInput formControlName="country" placeholder="Enter your country" type="text" />
-    <mat-icon matSuffix>flag</mat-icon>
-    <mat-error *ngIf="donorRegisterForm.get('country')?.hasError('required')">Country is required</mat-error>
-  </mat-form-field>
-
-  <mat-form-field appearance="outline">
-    <mat-label>City</mat-label>
-    <input matInput formControlName="city" placeholder="Enter your city" type="text" />
-    <mat-icon matSuffix>location_city</mat-icon>
-    <mat-error *ngIf="donorRegisterForm.get('city')?.hasError('required')">City is required</mat-error>
-  </mat-form-field>
-
-  <mat-form-field appearance="outline">
-
-    <mat-label>Address</mat-label>
-    <textarea matInput rows="1" placeholder="Enter your address..." formControlName="address"></textarea>
-    <mat-error *ngIf="donorRegisterForm.get('address')?.hasError('required')">Address is required</mat-error>
-  </mat-form-field>
-
-  <mat-form-field appearance="outline">
-    <mat-label>Phone</mat-label>
-    <input matInput formControlName="contact" placeholder="Enter your contact number" type="text" />
-    <mat-icon matSuffix>smartphone</mat-icon>
-    <mat-error *ngIf="donorRegisterForm.get('contact')?.hasError('required')">Phone number is required</mat-error>
-  </mat-form-field>
-
-  <mat-form-field appearance="outline" class="field-width-full">
-    <mat-label>Medical History</mat-label>
-    <textarea matInput rows="1" placeholder="e.g., chronic diseases, surgeries, allergies"
-      formControlName="medical_history"></textarea>
-    <mat-error *ngIf="donorRegisterForm.get('medical_history')?.hasError('required')">Medical History is required</mat-error>
-  </mat-form-field>
-
-  <span class="register-hint">Already a registered user? <a routerLink="/accounts/login">Sign In</a></span>
-
-  <div class="register-btn-wrapper">
-
-    <button [disabled]="!donorRegisterForm.valid" type="submit" color="primary" mat-raised-button class="register-button">
-      <mat-icon>save</mat-icon>
-      Create
-    </button>
+    <!-- Right Side (Illustration) -->
+    <div class="hidden lg:block lg:w-1/2">
+      <a href="https://google.com/images/123">
+        <img src="assets\images\rightElem.png" alt="Illustration" class="w-full h-auto">
+      </a>
+    </div>
   </div>
-</form>
+</div>
