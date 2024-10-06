@@ -16,79 +16,99 @@
         <div *ngIf="dataSource.length" class="table-container p-2 rounded-lg mt-10 justify-center">
             <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 w-full rounded-lg overflow-hidden">
                 <!-- Key Column -->
-                <ng-container matColumnDef="s_no" class="small">
-                    <th mat-header-cell *matHeaderCellDef class="bg-[#D9AA00] text-white py-4 px-6 text-left">
+                <ng-container matColumnDef="s_no">
+                    <th mat-header-cell *matHeaderCellDef class="bg-[#D9AA00] text-white py-4 px-6 text-left"
+                        style="width: 70px;">
                         S. No
                     </th>
-                    <td mat-cell *matCellDef="let element" class="py-4 px-6 border-b border-gray-200 text-gray-800">
+                    <td mat-cell *matCellDef="let element" class="py-4 px-6 border-b border-gray-200 text-gray-800"
+                        style="width: 50px;">
                         {{element.s_no}}
                     </td>
                 </ng-container>
-
-                <!-- Value Column -->
-                <ng-container matColumnDef="name" class="large">
-                    <th mat-header-cell *matHeaderCellDef class="bg-[#D9AA00] text-white py-4 px-6 text-left">
+        
+                <!-- Name Column -->
+                <ng-container matColumnDef="name">
+                    <th mat-header-cell *matHeaderCellDef class="bg-[#D9AA00] text-white py-4 px-6 text-left"
+                        style="width: 130px;">
                         Name
                     </th>
-                    <td mat-cell *matCellDef="let element" class="py-4 px-6 border-b border-gray-200 text-gray-800">
+                    <td mat-cell *matCellDef="let element" class="py-4 px-6 border-b border-gray-200 text-gray-800"
+                        style="width: 150px;">
                         {{element.name}}
                     </td>
                 </ng-container>
-
-                <ng-container matColumnDef="email" class="large">
-                    <th mat-header-cell *matHeaderCellDef class="bg-[#D9AA00] text-white py-4 px-6 text-left">
+        
+                <!-- Email Column -->
+                <ng-container matColumnDef="email">
+                    <th mat-header-cell *matHeaderCellDef class="bg-[#D9AA00] text-white py-4 px-6 text-left"
+                        style="width: 200px;">
                         Email
                     </th>
-                    <td mat-cell *matCellDef="let element" class="py-4 px-6 border-b border-gray-200 text-gray-800">
+                    <td mat-cell *matCellDef="let element" class="py-4 px-6 border-b border-gray-200 text-gray-800"
+                        style="width: 200px;">
                         {{element.email}}
                     </td>
                 </ng-container>
-
-                <ng-container matColumnDef="url" class="large">
-                    <th mat-header-cell *matHeaderCellDef class="bg-[#D9AA00] text-white py-4 px-6 text-left">
-                        Url
+        
+                <!-- URL Column (with text wrap) -->
+                <ng-container matColumnDef="url">
+                    <th mat-header-cell *matHeaderCellDef class="bg-[#D9AA00] text-white py-4 px-6 text-left"
+                        style="width: 250px;">
+                        URL
                     </th>
-                    <td mat-cell *matCellDef="let element" class="py-4 px-6 border-b border-gray-200 text-gray-800">
+                    <td mat-cell *matCellDef="let element" class="py-4 px-6 border-b border-gray-200 text-gray-800"
+                        style="width: 250px; word-break: break-all; white-space: normal;">
                         {{element.url}}
                     </td>
                 </ng-container>
-
-                <ng-container matColumnDef="result" class="large">
-                    <th mat-header-cell *matHeaderCellDef class="bg-[#D9AA00] text-white py-4 px-6 text-left">
+        
+                <!-- Result Column -->
+                <ng-container matColumnDef="result">
+                    <th mat-header-cell *matHeaderCellDef class="bg-[#D9AA00] text-white py-4 px-6 text-left"
+                        style="width: 120px;">
                         Result
                     </th>
-                    <td mat-cell *matCellDef="let element" class="py-4 px-6 border-b border-gray-200 text-gray-800">
+                    <td mat-cell *matCellDef="let element" class="py-4 px-6 border-b border-gray-200 text-gray-800 text-center"
+                        style="width: 150px;">
                         {{element.result}}
                     </td>
                 </ng-container>
-
-                <ng-container matColumnDef="model" class="large">
-                    <th mat-header-cell *matHeaderCellDef class="bg-[#D9AA00] text-white py-4 px-6 text-left">
+        
+                <!-- Model Column -->
+                <ng-container matColumnDef="model">
+                    <th mat-header-cell *matHeaderCellDef class="bg-[#D9AA00] text-white py-4 px-6 text-left"
+                        style="width: 150px;">
                         Model
                     </th>
-                    <td mat-cell *matCellDef="let element" class="py-4 px-6 border-b border-gray-200 text-gray-800">
+                    <td mat-cell *matCellDef="let element" class="py-4 px-6 border-b border-gray-200 text-gray-800"
+                        style="width: 150px;">
                         {{element.model}}
                     </td>
                 </ng-container>
-
-                <ng-container matColumnDef="view_more" class="large">
-                    <th mat-header-cell *matHeaderCellDef class="bg-[#D9AA00] text-white py-4 px-6 text-left">
+        
+                <!-- View More Column -->
+                <ng-container matColumnDef="view_more">
+                    <th mat-header-cell *matHeaderCellDef class="bg-[#D9AA00] text-white py-4 px-6 text-left"
+                        style="width: 100px;">
                         Action
                     </th>
-                    <td mat-cell *matCellDef="let element" class="py-4 px-6 border-b border-gray-200 text-gray-800">
+                    <td mat-cell *matCellDef="let element" class="py-4 px-6 border-b border-gray-200 text-gray-800"
+                        style="width: 100px;">
                         <button class="text-white text-[12px] bg-blue-600 px-4 py-2 rounded-[20px]"
                             (click)="viewMoreAction(element.view_more)">
                             View More
                         </button>
                     </td>
                 </ng-container>
-
+        
                 <!-- Header and Row Definitions -->
                 <tr mat-header-row *matHeaderRowDef="displayedColumns" class="bg-gray-50"></tr>
                 <tr mat-row *matRowDef="let row; columns: displayedColumns;"
                     class="hover:bg-gray-100 transition ease-in-out duration-300"></tr>
             </table>
         </div>
+        
     </div>
 
     <div *ngIf="isModalOpen" class="random-modal-overlay">
