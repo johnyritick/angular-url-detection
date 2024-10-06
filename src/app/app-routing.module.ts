@@ -34,7 +34,7 @@ const routes: Routes = [
   // { path: 'hospital/blood-requirement', canActivate: [AdminGuard] ,component: HospitalListComponent },
   // { path: 'hospital/request-blood', component: RequestBloodComponent },
   // { path: 'panel/faq', canActivate: [AuthGuard], component: FaqComponent },
-  { path: 'panel/url-feedback', canActivate: [AuthGuard], component: UrlFeedbackComponent },
+  // { path: 'panel/url-feedback', canActivate: [AuthGuard], component: UrlFeedbackComponent },
   { path: 'panel/user-feedback', canActivate: [AdminGuard], component: UserFeedbackComponent },
   { path: 'panel/dashboard', canActivate: [AdminGuard], component: DashboardComponent }, // auth guard
   { path: 'panel/graph', canActivate: [AdminGuard], component: CustomGraphComponent }, // auth guard

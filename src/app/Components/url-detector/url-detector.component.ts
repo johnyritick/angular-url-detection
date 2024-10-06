@@ -12,6 +12,7 @@ export class UrlDetectorComponent implements OnInit {
   url: string;
   selectedModel: string;
   loader: boolean;
+  feedBackLoader: boolean;
   showUrlInputForm: boolean;
   urlReport: {
     status: string,
@@ -33,6 +34,7 @@ export class UrlDetectorComponent implements OnInit {
     this.url = ""
     this.selectedModel = ""
     this.loader = false
+    this.feedBackLoader = false
     this.showUrlInputForm = true
     this.urlReport = {
       status: "",
@@ -101,6 +103,29 @@ export class UrlDetectorComponent implements OnInit {
       },
       complete: () => {
         this.loader = false
+      }
+    })
+  }
+
+  feedbackAction(key: string) {
+    this.feedBackLoader = true
+    this.http.post("http://0.0.0.0:80/user/submit-feedback", {
+      "url": this.url,
+      "predicted_flag": this.urlReport.status,
+      "user_feedback": key
+    }).subscribe({
+      next: (response: any) => {
+        if (response.success) {
+          this.openSnackBar(response.message ?? "Feedback submitted", "OK", true)
+        } else {
+          this.openSnackBar(response.message ?? "Failed to submit feedback", "OK")
+        }
+      },
+      error: (error) => {
+        this.openSnackBar("Failed to submit feedback", "OK")
+      },
+      complete: () => {
+        this.feedBackLoader = false
       }
     })
   }

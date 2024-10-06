@@ -46,19 +46,36 @@
         <div class="w-full lg:w-1/2 space-y-6" *ngIf="isReportEmpty()">
             <p class="text-[#444B59] font-[800] text-[36px] py-[40px]">Result -</p>
 
-            <p class="bg-green-700 text-white font-[600] text-[20px] px-6 py-2 rounded-[20px]"
-                *ngIf="urlReport.status === 'Safe'">
-                Safe
-            </p>
-            <p class="bg-red-700 text-white font-[600] text-[20px] px-6 py-2 rounded-[20px]"
-                *ngIf="urlReport.status === 'Not Safe'">
-                Not Safe
+            <p class="font-[500] text-[20px]">
+                This above provided URL is
+                <span class="text-green-700 font-[600] text-[20px] py-2 rounded-[20px]"
+                    *ngIf="urlReport.status === 'Safe'">
+                    Safe
+                </span>
+                <span class="text-red-700 font-[600] text-[20px] py-2 rounded-[20px]"
+                    *ngIf="urlReport.status === 'Not Safe'">
+                    Not Safe
+                </span>
             </p>
 
             <button (click)="viewMore()"
                 class="bg-custom-yellow text-[600] text-white text-[18px] px-6 py-2 rounded-[20px]">
-                View More Detail
+                View More Details
             </button>
+            <hr />
+            <div>
+                <p>
+                    Provide feedback to admin for generated result ?
+                </p>
+                <button (click)="feedbackAction(urlReport.status)"
+                    class="bg-green-600 text-[600] text-white text-[14px] px-4 py-2 rounded-[20px]">
+                    Agree with result
+                </button>
+                <button (click)="feedbackAction(urlReport.status === 'Safe' ?'Not Safe' : 'Safe')"
+                    class="bg-red-600 text-[600] text-white text-[14px] px-4 py-2 rounded-[20px] ml-2">
+                    Disagree with result
+                </button>
+            </div>
         </div>
 
 
@@ -70,31 +87,32 @@
         <div class="" *ngIf="!isReportEmpty()">
             <div *ngIf="dataSource.length" class="table-container p-2 rounded-lg">
                 <table mat-table [dataSource]="dataSource" class="mat-elevation-z8 w-full rounded-lg overflow-hidden">
-                  <!-- Key Column -->
-                  <ng-container matColumnDef="key" class="small">
-                    <th mat-header-cell *matHeaderCellDef class="bg-[#D9AA00] text-white py-4 px-6 text-left">
-                      Key
-                    </th>
-                    <td mat-cell *matCellDef="let element" class="py-4 px-6 border-b border-gray-200 text-gray-800">
-                      {{element.key}}
-                    </td>
-                  </ng-container>
-              
-                  <!-- Value Column -->
-                  <ng-container matColumnDef="value" class="large">
-                    <th mat-header-cell *matHeaderCellDef class="bg-[#D9AA00] text-white py-4 px-6 text-left">
-                      Value
-                    </th>
-                    <td mat-cell *matCellDef="let element" class="py-4 px-6 border-b border-gray-200 text-gray-800">
-                      {{element.value}}
-                    </td>
-                  </ng-container>
-              
-                  <!-- Header and Row Definitions -->
-                  <tr mat-header-row *matHeaderRowDef="displayedColumns" class="bg-gray-50"></tr>
-                  <tr mat-row *matRowDef="let row; columns: displayedColumns;" class="hover:bg-gray-100 transition ease-in-out duration-300"></tr>
+                    <!-- Key Column -->
+                    <ng-container matColumnDef="key" class="small">
+                        <th mat-header-cell *matHeaderCellDef class="bg-[#D9AA00] text-white py-4 px-6 text-left">
+                            Key
+                        </th>
+                        <td mat-cell *matCellDef="let element" class="py-4 px-6 border-b border-gray-200 text-gray-800">
+                            {{element.key}}
+                        </td>
+                    </ng-container>
+
+                    <!-- Value Column -->
+                    <ng-container matColumnDef="value" class="large">
+                        <th mat-header-cell *matHeaderCellDef class="bg-[#D9AA00] text-white py-4 px-6 text-left">
+                            Value
+                        </th>
+                        <td mat-cell *matCellDef="let element" class="py-4 px-6 border-b border-gray-200 text-gray-800">
+                            {{element.value}}
+                        </td>
+                    </ng-container>
+
+                    <!-- Header and Row Definitions -->
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns" class="bg-gray-50"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"
+                        class="hover:bg-gray-100 transition ease-in-out duration-300"></tr>
                 </table>
-              </div>
+            </div>
         </div>
     </div>
 </div>
