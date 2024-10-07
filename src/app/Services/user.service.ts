@@ -6,7 +6,6 @@ import {
 import { Injectable } from '@angular/core'
 import { BehaviorSubject, catchError, throwError, retry } from 'rxjs'
 import { User } from '../Models/user'
-import { DonorInfo } from '../Models/donor'
 import { Router } from '@angular/router'
 const httpOptions = {
   headers: new HttpHeaders({
@@ -66,18 +65,18 @@ export class UserService {
     )
   }
 
-  getUser(email: string = "") {
-    let donorsData = JSON.parse(localStorage.getItem("donorsList") || "[]");
-    let currentUserEmail = email;
-    if (email === "") {
-      currentUserEmail = localStorage.getItem('email') || "";
-    }
-    if (donorsData === null || !donorsData.length || currentUserEmail === null || currentUserEmail === '') {
-      return []
-    } else {
-      return donorsData.filter((item: DonorInfo) => item.email == currentUserEmail)
-    }
-  }
+  // getUser(email: string = "") {
+  //   let donorsData = JSON.parse(localStorage.getItem("donorsList") || "[]");
+  //   let currentUserEmail = email;
+  //   if (email === "") {
+  //     currentUserEmail = localStorage.getItem('email') || "";
+  //   }
+  //   if (donorsData === null || !donorsData.length || currentUserEmail === null || currentUserEmail === '') {
+  //     return []
+  //   } else {
+  //     return donorsData.filter((item: DonorInfo) => item.email == currentUserEmail)
+  //   }
+  // }
 
   getAllDonors() {
     let donorsData = JSON.parse(localStorage.getItem("donorsList") || "[]");
@@ -184,48 +183,6 @@ export class UserService {
     }).join(''));
 
     return JSON.parse(jsonPayload);
-  }
-
-  addUserToLocalStorage(payload: any) {
-    let existingUsers = JSON.parse(localStorage.getItem("donorsList") || "[]")
-
-    let donorData: DonorInfo = {
-      id: 123,
-      name: payload.name,
-      email: payload.email,
-      password: payload.password,
-      confirmPassword: payload.confirmPassword,
-      contact: payload.contact,
-      gender: payload.gender,
-      dob: payload.dob,
-      bloodgroup: payload.blood,
-      medical_history: payload.medical_history,
-      unit: 0,
-      requestedDate: "",
-      created_at: payload.created_at,
-      updated_at: payload.updated_at,
-      status: "",
-      city: payload.city,
-      country: payload.country,
-      address: payload.address
-    }
-
-    if (existingUsers === null || !existingUsers.length) {
-      this.updateDonorsDetails([donorData])
-    } else {
-      existingUsers = [
-        ...existingUsers,
-        {
-          ...donorData,
-          id: existingUsers[existingUsers.length - 1].id + 1
-        }
-      ]
-      this.updateDonorsDetails(existingUsers)
-    }
-  }
-
-  updateDonorsDetails(payload: DonorInfo[]) {
-    localStorage.setItem("donorsList", JSON.stringify(payload));
   }
 
   private handleError(error: HttpErrorResponse) {

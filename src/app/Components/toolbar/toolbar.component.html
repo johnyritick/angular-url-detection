@@ -19,6 +19,17 @@
   <mat-sidenav-container class="content-container">
     <mat-sidenav *ngIf="isLoggedIn$ | async as isLogged" #drawer class="sidenav" mode="side" opened>
       <mat-nav-list>
+        <a *ngIf="isLoggedIn$ | async as isLogged" mat-list-item matTooltip="donor" routerLink="/panel/url-detector">
+          <mat-icon mat-list-icon class="">account_circle</mat-icon>
+          <span>Url Detector</span>
+        </a>
+        
+        <a *ngIf="isLoggedIn$ | async as isLogged" mat-list-item matTooltip="donor"
+          routerLink="/panel/bulk-url-detector">
+          <mat-icon mat-list-icon class="">account_circle</mat-icon>
+          <span>Bulk Url Detector</span>
+        </a>
+
         <a *ngIf="isAdmin$ | async as isAdmin" mat-list-item routerLink="/panel/dashboard" matTooltip="Home">
           <mat-icon mat-list-icon class="">home</mat-icon>
           <span>Dashboard</span>
@@ -32,17 +43,6 @@
         <a *ngIf="isAdmin$ | async as isAdmin" mat-list-item routerLink="/panel/manage-users" matTooltip="Home">
           <mat-icon mat-list-icon class="">home</mat-icon>
           <span>Manage User</span>
-        </a>
-
-        <a *ngIf="isUser$ | async as isUser" mat-list-item matTooltip="donor"
-          routerLink="/panel/url-detector">
-          <mat-icon mat-list-icon class="">account_circle</mat-icon>
-          <span>Url Detector</span>
-        </a>
-        <a *ngIf="isUser$ | async as isUser" mat-list-item matTooltip="donor"
-          routerLink="/panel/bulk-url-detector">
-          <mat-icon mat-list-icon class="">account_circle</mat-icon>
-          <span>Bulk Url Detector</span>
         </a>
 
         <!-- <a *ngIf="isAdmin" mat-list-item matTooltip="searchAqi" routerLink="/inventory"> -->

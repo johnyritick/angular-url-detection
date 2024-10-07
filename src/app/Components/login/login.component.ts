@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core'
 import { FormBuilder, Validators } from '@angular/forms'
 import { MatSnackBar } from '@angular/material/snack-bar'
 import { Router } from '@angular/router'
-import { HospitalService } from 'src/app/Services/hospital.service'
 import { UserService } from 'src/app/Services/user.service'
 
 interface SelectInput {

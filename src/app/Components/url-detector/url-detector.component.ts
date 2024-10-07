@@ -86,7 +86,7 @@ export class UrlDetectorComponent implements OnInit {
 
   async searchUrlData() {
     this.loader = true
-    this.http.post("http://0.0.0.0:80/ml/predict", { url: this.url, model: this.selectedModel }).subscribe({
+    this.http.post("http://0.0.0.0:80/ml/predict", { url: this.url }).subscribe({
       next: (response: any) => {
         if (response.success) {
           this.showUrlInputForm = false
