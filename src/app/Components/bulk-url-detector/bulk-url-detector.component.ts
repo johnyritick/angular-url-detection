@@ -29,7 +29,8 @@ export class BulkUrlDetectorComponent implements OnInit {
     // Create an input element to select the file
     const fileInput = document.createElement('input');
     fileInput.type = 'file';
-    fileInput.accept = '.txt,.xls,.xlsx,.csv';
+    // fileInput.accept = '.txt,.xls,.xlsx,.csv';
+    fileInput.accept = '.csv';
     fileInput.click();
 
     // Handle file selection
@@ -42,7 +43,8 @@ export class BulkUrlDetectorComponent implements OnInit {
 
       // Validate file type
       if (!allowedTypes.includes(file.type)) {
-        this.openSnackBar('Invalid file type. Supported formats: Text, XL, or CSV.', 'Ok')
+        // this.openSnackBar('Invalid file type. Supported formats: Text, XL, or CSV.', 'Ok')
+        this.openSnackBar('Invalid file type. Supported formats: CSV', 'Ok')
         return;
       }
 
@@ -51,7 +53,6 @@ export class BulkUrlDetectorComponent implements OnInit {
         this.openSnackBar('File is too large. Maximum size allowed is 5MB.', 'Ok')
         return;
       }
-      console.log("file", file);
 
       this.file = file
     };
@@ -83,6 +84,7 @@ export class BulkUrlDetectorComponent implements OnInit {
 
   clearFile() {
     this.file = null
+    this.loader = false
   }
 
   openSnackBar(message: string, action: string, isSuccess: boolean = false) {

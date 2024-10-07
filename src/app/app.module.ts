@@ -24,15 +24,7 @@ import { BasicAuthHttpInterceptor } from './Services/basic-auth-http.interceptor
 import { RegisterPageComponent } from './Components/register-page/register-page.component';
 import { HomePageComponent } from './Components/home-page/home-page.component';
 import { DashboardComponent } from './Components/dashboard/dashboard.component';
-import { DonorListComponent } from './Components/donor/donor-list/donor-list.component';
-import { ScheduleAppointmentComponent } from './Components/donor/schedule-appointment/schedule-appointment.component';
-import { SearchTableComponent } from './Components/search-table/search-table.component';
-import { DonoationRequestComponent } from './Components/donor/donoation-request/donoation-request.component';
 import { CustomModalComponent } from './Components/custom-modal/custom-modal.component';
-import { HospitalListComponent } from './Components/hospital/hospital-list/hospital-list.component';
-import { InventoryComponent } from './Components/inventory/inventory.component';
-import { HospitalRegistrationComponent } from './Components/hospital/hospital-registration/hospital-registration.component';
-import { RequestBloodComponent } from './Components/hospital/request-blood/request-blood.component';
 import { UrlDetectorComponent } from './Components/url-detector/url-detector.component';
 import { BulkUrlDetectorComponent } from './Components/bulk-url-detector/bulk-url-detector.component';
 import { TokenExpiredComponent } from './Components/token-expired/token-expired.component';
@@ -57,15 +49,7 @@ import { ManagerUserComponent } from './Components/manager-user/manager-user.com
     RegisterPageComponent,
     HomePageComponent,
     DashboardComponent,
-    DonorListComponent,
-    ScheduleAppointmentComponent,
-    SearchTableComponent,
-    DonoationRequestComponent,
     CustomModalComponent,
-    HospitalListComponent,
-    InventoryComponent,
-    RequestBloodComponent,
-    HospitalRegistrationComponent,
     UrlDetectorComponent,
     BulkUrlDetectorComponent,
     TokenExpiredComponent,
