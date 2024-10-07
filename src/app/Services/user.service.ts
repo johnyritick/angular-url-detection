@@ -97,6 +97,10 @@ export class UserService {
   //for login user
   loginUser(token: string, email: string, password: string, role: string) {
     this.isLogged.next(true)
+    this.UserName.next(email)
+    this.isAdmin.next(role === "admin")
+    this.isUser.next(role === "user")
+    this.role.next(role)
     localStorage.setItem('isLogged', '1')
     localStorage.setItem('token', token)
     localStorage.setItem('userName', email)
@@ -155,6 +159,14 @@ export class UserService {
 
   get loggedInStatus() {
     return this.isLogged.asObservable()
+  }
+
+  get loggedInAdmin() {
+    return this.isAdmin.asObservable()
+  }
+
+  get loggedInUser() {
+    return this.isUser.asObservable()
   }
 
   get currentUserName() {
