@@ -12,9 +12,8 @@ export class ToolbarComponent {
   isLoggedIn$: any
   UserName$: any
   role$: any
-  isAdmin: boolean = false
-  isUser: boolean = false
-  isHospital: boolean = false
+  isAdmin$: any
+  isUser$: any
   name: string = ""
   constructor(private user: UserService, private router: Router) { }
 
@@ -23,16 +22,8 @@ export class ToolbarComponent {
     this.isLoggedIn$ = this.user.loggedInStatus
     this.UserName$ = this.user.currentUserName
     this.role$ = this.user.Role
-    this.isAdmin = false
-    if (this.role$.source._value == "admin") {
-      this.isAdmin = true;
-      console.log(this.isAdmin)
-    } else if (this.role$.source._value == "user") {
-      this.isUser = true;
-    } else if (this.role$.source._value == "hospital") {
-      this.isHospital = true;
-      console.log("role_1",this.role$.source._value);
-    }
+    this.isAdmin$ = this.user.loggedInAdmin;
+    this.isUser$ = this.user.loggedInUser
   }
 
   ngOnChanges(): void {

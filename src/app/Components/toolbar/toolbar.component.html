@@ -19,27 +19,27 @@
   <mat-sidenav-container class="content-container">
     <mat-sidenav *ngIf="isLoggedIn$ | async as isLogged" #drawer class="sidenav" mode="side" opened>
       <mat-nav-list>
-        <a *ngIf="isAdmin" mat-list-item routerLink="/panel/dashboard" matTooltip="Home">
+        <a *ngIf="isAdmin$ | async as isAdmin" mat-list-item routerLink="/panel/dashboard" matTooltip="Home">
           <mat-icon mat-list-icon class="">home</mat-icon>
           <span>Dashboard</span>
         </a>
 
-        <a *ngIf="isAdmin" mat-list-item routerLink="/panel/graph" matTooltip="Home">
+        <a *ngIf="isAdmin$ | async as isAdmin" mat-list-item routerLink="/panel/graph" matTooltip="Home">
           <mat-icon mat-list-icon class="">home</mat-icon>
           <span>Graph</span>
         </a>
 
-        <a *ngIf="isAdmin" mat-list-item routerLink="/panel/manage-users" matTooltip="Home">
+        <a *ngIf="isAdmin$ | async as isAdmin" mat-list-item routerLink="/panel/manage-users" matTooltip="Home">
           <mat-icon mat-list-icon class="">home</mat-icon>
           <span>Manage User</span>
         </a>
 
-        <a *ngIf="isUser && isLoggedIn$ | async as isLogged" mat-list-item matTooltip="donor"
+        <a *ngIf="isUser$ | async as isUser" mat-list-item matTooltip="donor"
           routerLink="/panel/url-detector">
           <mat-icon mat-list-icon class="">account_circle</mat-icon>
           <span>Url Detector</span>
         </a>
-        <a *ngIf="isUser && isLoggedIn$ | async as isLogged" mat-list-item matTooltip="donor"
+        <a *ngIf="isUser$ | async as isUser" mat-list-item matTooltip="donor"
           routerLink="/panel/bulk-url-detector">
           <mat-icon mat-list-icon class="">account_circle</mat-icon>
           <span>Bulk Url Detector</span>
@@ -52,7 +52,7 @@
           <span>Feedback</span>
         </a> -->
 
-        <a *ngIf="isAdmin" mat-list-item matTooltip="searchAqi" routerLink="/panel/user-feedback">
+        <a *ngIf="isAdmin$ | async as isAdmin" mat-list-item matTooltip="searchAqi" routerLink="/panel/user-feedback">
           <mat-icon mat-list-icon class="">supervised_user_circle</mat-icon>
           <span>Feedback</span>
         </a>
