@@ -19,7 +19,7 @@
                     <p class="text-sm text-gray-600">Predicted Result : {{ feedback.predicted_flag }}</p>
                     <p class="text-sm text-gray-600">User Feedback : {{ feedback.user_feedback }}</p>
                     <!-- View More Button -->
-                    <button (click)="openModal(feedback.url)"
+                    <button (click)="openModal(feedback)"
                         class="bg-[#D9AA00] text-white font-semibold py-2 px-4 rounded-lg mt-4 shadow hover:bg-yellow-600 transition cursor-pointer">
                         Take Action
                     </button>
@@ -41,7 +41,14 @@
                         <label for="url-input" class="block text-gray-500 text-lg font-bold mb-2">Reported URL</label>
                         <input id="url-input" type="text" [(ngModel)]="url"
                             class="border border-gray-400 rounded-full w-full px-4 py-2 text-gray-600 focus:outline-none focus:border-blue-500"
-                            placeholder="Enter url" />
+                            placeholder="Enter url" readonly/>
+                    </div>
+
+                    <div class="">
+                        <label for="url-input" class="block text-gray-500 text-lg font-bold mb-2">Reported Reason</label>
+                        <input id="url-input" type="text" [(ngModel)]="reason"
+                            class="border border-gray-400 rounded-full w-full px-4 py-2 text-gray-600 focus:outline-none focus:border-blue-500"
+                            placeholder="Enter reason" readonly/>
                     </div>
 
                     <!-- Button Section -->

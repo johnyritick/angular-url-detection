@@ -17,11 +17,13 @@ export class UserFeedbackComponent implements OnInit {
     "created_at": string,
     "predicted_flag": string,
     "updated_at": string,
-    "user_feedback": string
+    "user_feedback": string, // safe or unsafe
+    "reason" : string   // mention the reason for not agreering
   }[] = []
   loader: boolean
   isModalOpen: boolean;
   url: string
+  reason: string
 
   constructor(
     private http: HttpClient,
@@ -30,6 +32,7 @@ export class UserFeedbackComponent implements OnInit {
     this.loader = false
     this.isModalOpen = false
     this.url = ""
+    this.reason = ""
   }
 
   ngOnInit(): void {
@@ -40,9 +43,10 @@ export class UserFeedbackComponent implements OnInit {
     this.isModalOpen = false
   }
 
-  openModal(url: string) {
+  openModal(feedback: any) {
     this.isModalOpen = true
-    this.url = url
+    this.url = feedback.url
+    this.reason = feedback.reason
   }
 
   updateUrlFlag(value: boolean) {
@@ -78,7 +82,8 @@ export class UserFeedbackComponent implements OnInit {
               "created_at": item.created_at,
               "predicted_flag": item.predicted_flag,
               "updated_at": item.updated_at,
-              "user_feedback": item.user_feedback
+              "user_feedback": item.user_feedback,
+              "reason" : item.reason
             })
           })
           this.dataSource = temp

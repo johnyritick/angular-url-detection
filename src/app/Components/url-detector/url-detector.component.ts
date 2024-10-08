@@ -11,6 +11,7 @@ export class UrlDetectorComponent implements OnInit {
   dataSource: {}[] = []
   url: string;
   selectedModel: string;
+  reason: string;
   loader: boolean;
   feedBackLoader: boolean;
   showUrlInputForm: boolean;
@@ -40,6 +41,7 @@ export class UrlDetectorComponent implements OnInit {
       status: "",
       report: {}
     }
+    this.reason = ""
   }
 
   ngOnInit(): void {
@@ -68,8 +70,6 @@ export class UrlDetectorComponent implements OnInit {
               })
             }
           })
-          console.log("temp data", temp);
-
           this.dataSource = temp
         } else {
           this.openSnackBar(response.message, "Ok")
@@ -112,7 +112,8 @@ export class UrlDetectorComponent implements OnInit {
     this.http.post("http://0.0.0.0:80/user/submit-feedback", {
       "url": this.url,
       "predicted_flag": this.urlReport.status,
-      "user_feedback": key
+      "user_feedback": key,
+      "reason": this.reason
     }).subscribe({
       next: (response: any) => {
         if (response.success) {
