@@ -16,6 +16,7 @@ import { UserFeedbackComponent } from './Components/user-feedback/user-feedback.
 import { CustomGraphComponent } from './Components/custom-graph/custom-graph.component'
 import { ManagerUserComponent } from './Components/manager-user/manager-user.component'
 import { BlogComponent } from './Components/blog/blog.component'
+import { ManageBlogComponent } from './Components/manage-blog/manage-blog.component'
 
 const routes: Routes = [
   { path: 'homepage', component: LoginComponent },
@@ -26,6 +27,7 @@ const routes: Routes = [
   { path: 'panel/url-detector', canActivate: [AuthGuard], component: UrlDetectorComponent },
   { path: 'panel/bulk-url-detector', canActivate: [AuthGuard], component: BulkUrlDetectorComponent },
   { path: 'panel/blog', canActivate: [AuthGuard], component: BlogComponent },
+  { path: 'panel/manage-blog', canActivate: [AdminGuard], component: ManageBlogComponent },
   { path: 'panel/user-feedback', canActivate: [AdminGuard], component: UserFeedbackComponent },
   { path: 'panel/dashboard', canActivate: [AdminGuard], component: DashboardComponent }, // auth guard
   { path: 'panel/graph', canActivate: [AdminGuard], component: CustomGraphComponent }, // auth guard

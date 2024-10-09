@@ -35,7 +35,8 @@ import { UrlFeedbackComponent } from './Components/url-feedback/url-feedback.com
 import { UserFeedbackComponent } from './Components/user-feedback/user-feedback.component';
 import { CustomGraphComponent } from './Components/custom-graph/custom-graph.component';
 import { ManagerUserComponent } from './Components/manager-user/manager-user.component';
-import { BlogComponent } from './Components/blog/blog.component'
+import { BlogComponent } from './Components/blog/blog.component';
+import { ManageBlogComponent } from './Components/manage-blog/manage-blog.component'
 
 @NgModule({
   declarations: [
@@ -61,6 +62,7 @@ import { BlogComponent } from './Components/blog/blog.component'
     CustomGraphComponent,
     ManagerUserComponent,
     BlogComponent,
+    ManageBlogComponent,
   ],
   imports: [
     BrowserModule,

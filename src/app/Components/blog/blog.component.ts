@@ -1,4 +1,6 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 interface Blog {
   url: string;
@@ -15,51 +17,57 @@ interface Blog {
 })
 export class BlogComponent implements OnInit {
   blogs: Blog[] = [];
+  loader: boolean
 
-  constructor() { }
+  constructor(
+    private http: HttpClient,
+    private _snackBar: MatSnackBar,
+  ) {
+    this.loader = true
+  }
 
   ngOnInit(): void {
-    this.blogs = [
-      {
-        url: 'https://medium.com/@cybersecuritystephen/what-is-phishing-and-how-can-i-protect-myself-082eb300995b',
-        previewImage: 'https://miro.medium.com/v2/resize:fit:1400/format:webp/1*HR9qTv9zA6KaEHvMprI1aQ.jpeg',
-        title: 'Phising Attack',
-        key: 1,
-        description: 'What is Phishing, and How Can I Protect Myself?'
-      },
-      {
-        url: 'https://www.cloudflare.com/lp/2023-phishing-report/',
-        previewImage: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSiHl-ElVmvil3lxGS_dqUHyV_5gXFtA6FQ3A&s',
-        title: 'Cloudflare. (2023). 2023 Phishing Threats Report',
-        key: 2,
-        description: 'Attack trends in multi-channel phishing, identity deception, malicious new domains, and more'
-      },
-      {
-        url: 'https://www.cisco.com/c/en/us/products/security/email-security/what-is-phishing.html',
-        previewImage: 'https://i0.wp.com/cyble.com/wp-content/uploads/2023/09/what-is-phishing.webp?fit=1024%2C512&ssl=1',
-        title: 'What Is Phishing?',
-        key: 3,
-        description: 'How do phishing scams trick users'
-      },
-      {
-        url: 'https://www.cloudflare.com/lp/2023-phishing-report/',
-        previewImage: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSiHl-ElVmvil3lxGS_dqUHyV_5gXFtA6FQ3A&s',
-        title: 'Cloudflare. (2023). 2023 Phishing Threats Report',
-        key: 4,
-        description: 'Attack trends in multi-channel phishing, identity deception, malicious new domains, and more'
-      },
-      {
-        url: 'https://www.cisco.com/c/en/us/products/security/email-security/what-is-phishing.html',
-        previewImage: 'https://i0.wp.com/cyble.com/wp-content/uploads/2023/09/what-is-phishing.webp?fit=1024%2C512&ssl=1',
-        title: 'What Is Phishing?',
-        key: 5,
-        description: 'How do phishing scams trick users'
-      },
-    ];
+    this.getBlogData()
   }
 
   openLink(url: string): void {
     window.open(url, '_blank');
+  }
+
+
+  getBlogData() {
+    this.http.get("http://0.0.0.0:80/user/get-all-blogs").subscribe({
+      next: (response: any) => {
+        if (response.success) {
+          let temp: Blog[] = []
+          response.blogs.map((item: any) => {
+            temp.push({
+              url: item.url,
+              previewImage: item.image_url,
+              title: item.title,
+              description: item.description,
+              key: item._id
+            })
+          })
+          this.blogs = temp
+        } else {
+          this.openSnackBar(response.message, 'Ok')
+        }
+      },
+      error: () => {
+        this.openSnackBar("Failed to load data", 'Ok')
+      },
+      complete: () => {
+        this.loader = false
+      }
+    })
+  }
+
+  openSnackBar(message: string, action: string, isSuccess: boolean = false) {
+    this._snackBar.open(message, action, {
+      duration: 2000,
+      panelClass: isSuccess ? ['green-snackbar'] : ['red-snackbar'],
+    })
   }
 
 }
