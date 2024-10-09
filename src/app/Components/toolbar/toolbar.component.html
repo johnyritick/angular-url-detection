@@ -51,12 +51,11 @@
           <span>Manage User</span>
         </a>
 
-        <!-- <a *ngIf="isAdmin" mat-list-item matTooltip="searchAqi" routerLink="/inventory"> -->
-        <!-- <a *ngIf="isUser && isLoggedIn$ | async as isLogged" mat-list-item matTooltip="searchAqi"
-          routerLink="/panel/url-feedback">
-          <mat-icon mat-list-icon class="">supervised_user_circle</mat-icon>
-          <span>Feedback</span>
-        </a> -->
+        <a *ngIf="isAdmin$ | async as isAdmin" mat-list-item matTooltip="donor"
+          routerLink="/panel/manage-blog">
+          <mat-icon mat-list-icon class="">account_circle</mat-icon>
+          <span>Manage Blogs</span>
+        </a>
 
         <a *ngIf="isAdmin$ | async as isAdmin" mat-list-item matTooltip="searchAqi" routerLink="/panel/user-feedback">
           <mat-icon mat-list-icon class="">supervised_user_circle</mat-icon>
