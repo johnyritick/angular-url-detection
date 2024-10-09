@@ -51,6 +51,25 @@ export class UrlDetectorComponent implements OnInit {
     return Object.keys(this.urlReport.report).length === 0;
   }
 
+  flattenObject(obj: any, parentKey = '', result: any = []) {
+    for (let key in obj) {
+      if (obj.hasOwnProperty(key)) {
+        const newKey = parentKey ? `${parentKey}_${key}` : key; // Concatenate parent key with current key using an underscore
+
+        if (typeof obj[key] === 'object' && !Array.isArray(obj[key])) {
+          // Recursively flatten the nested object
+          this.flattenObject(obj[key], newKey, result);
+        } else {
+          // Assign the value to the result object
+          if (obj[key] !== "") {
+            result.push({ "key": newKey, "value": obj[key] ?? "NA" })
+          }
+        }
+      }
+    }
+    return result;
+  }
+
   viewMore() {
     this.loader = true
     this.http.post("http://0.0.0.0:80/ml/feature-detail", { url: this.url }).subscribe({
@@ -61,16 +80,7 @@ export class UrlDetectorComponent implements OnInit {
             ...this.urlReport,
             report: response.detail?.[0]
           }
-          let temp: {}[] = [];
-          Object.keys(response.detail[0]).map((item) => {
-            if (typeof response.detail[0][item] === "string") {
-              temp.push({
-                key: item,
-                value: response.detail[0][item]
-              })
-            }
-          })
-          this.dataSource = temp
+          this.dataSource = this.flattenObject(response.detail[0])
         } else {
           this.openSnackBar(response.message, "Ok")
         }
@@ -85,26 +95,31 @@ export class UrlDetectorComponent implements OnInit {
   }
 
   async searchUrlData() {
-    this.loader = true
-    this.http.post("http://0.0.0.0:80/ml/predict", { url: this.url }).subscribe({
-      next: (response: any) => {
-        if (response.success) {
-          this.showUrlInputForm = false
-          this.urlReport = {
-            ...this.urlReport,
-            status: response.result
+    if (this.url.trim().length === 0) {
+      this.openSnackBar("Url is Missing", "Ok")
+    } else {
+      this.loader = true
+      this.http.post("http://0.0.0.0:80/ml/predict", { url: this.url }).subscribe({
+        next: (response: any) => {
+          if (response.success) {
+            this.showUrlInputForm = false
+            this.urlReport = {
+              ...this.urlReport,
+              status: response.result
+            }
+          } else {
+            this.openSnackBar(response.message, "Ok")
           }
-        } else {
-          this.openSnackBar(response.message, "Ok")
+        },
+        error: (error) => {
+          this.openSnackBar(error.message, "Ok")
+        },
+        complete: () => {
+          this.loader = false
         }
-      },
-      error: (error) => {
-        this.openSnackBar(error.message, "Ok")
-      },
-      complete: () => {
-        this.loader = false
-      }
-    })
+      })
+    }
+
   }
 
   feedbackAction(key: string) {
