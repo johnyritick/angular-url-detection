@@ -30,6 +30,12 @@
           <span>Bulk Url Detector</span>
         </a>
 
+        <a *ngIf="isUser$ | async as isUser" mat-list-item matTooltip="donor"
+          routerLink="/panel/blog">
+          <mat-icon mat-list-icon class="">account_circle</mat-icon>
+          <span>Blogs</span>
+        </a>
+
         <a *ngIf="isAdmin$ | async as isAdmin" mat-list-item routerLink="/panel/dashboard" matTooltip="Home">
           <mat-icon mat-list-icon class="">home</mat-icon>
           <span>Dashboard</span>
