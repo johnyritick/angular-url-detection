@@ -34,7 +34,8 @@ import { FaqComponent } from './Components/faq/faq.component';
 import { UrlFeedbackComponent } from './Components/url-feedback/url-feedback.component';
 import { UserFeedbackComponent } from './Components/user-feedback/user-feedback.component';
 import { CustomGraphComponent } from './Components/custom-graph/custom-graph.component';
-import { ManagerUserComponent } from './Components/manager-user/manager-user.component'
+import { ManagerUserComponent } from './Components/manager-user/manager-user.component';
+import { BlogComponent } from './Components/blog/blog.component'
 
 @NgModule({
   declarations: [
@@ -59,6 +60,7 @@ import { ManagerUserComponent } from './Components/manager-user/manager-user.com
     UserFeedbackComponent,
     CustomGraphComponent,
     ManagerUserComponent,
+    BlogComponent,
   ],
   imports: [
     BrowserModule,
