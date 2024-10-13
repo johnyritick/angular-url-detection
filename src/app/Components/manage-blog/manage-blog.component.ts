@@ -135,7 +135,7 @@ export class ManageBlogComponent implements OnInit {
   }
 
   updateBlogData() {
-    this.http.put("http://0.0.0.0:80/admin/get-all-blogs", {
+    this.http.put("http://0.0.0.0:80/admin/update-blog/" + this.isModalOpen, {
       "url": this.url,
       "image_url": this.image_url,
       "title": this.title,
